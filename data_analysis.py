@@ -2,11 +2,19 @@ import pandas as pd
 import numpy as np
 from pprint import pprint
 import csv
+import sys
+from helpers.k_centers_problem import CreateGraph, k_centers, DrawGraph
+import matplotlib.pyplot as plt
 
-num_stops = 150
-infile = './dataset/may-trimester-2017-stop-ridership-ranking-saturday-csv-9.csv'
-outfile = 'final_out.csv'
-max_radius = 0.01
+if len(sys.argv) < 4:
+    print('Usage: python3 data_analysis.py [path/to/data].csv [num_stops] [num_centers]')
+    exit(0)
+
+num_stops = sys.argv[2]
+#infile = './dataset/may-trimester-2017-stop-ridership-ranking-saturday-csv-9.csv'
+infile = sys.argv[1]
+max_radius = 0.05
+k = sys.argv[3]
 
 data = pd.read_csv(infile)
 data = data.drop(['DAY_OF_WEEK', 'STOP_NAME', 'RANK'], axis=1)
@@ -38,11 +46,11 @@ for i in range(final_data[:,0].shape[0]):
     stop_dict[i] = final_data[:,0][i]
 
 # Save info for later debugging
-with open('labels.txt','w') as f:
+with open('helpers/labels.txt','w') as f:
     pprint(final_cols, f)
     pprint(stop_dict, f)
 
-
+#Create initial data
 dists = np.zeros((num_stops, num_stops))
 for i in range(final_data.shape[0]):
     stop = final_data[i,0]
@@ -51,10 +59,18 @@ for i in range(final_data.shape[0]):
     inds = np.where(np.square(final_data[:,1]-lat) + np.square(final_data[:,2]-lon) <= max_radius**2)[0]
     dists[i,inds] = np.sqrt((np.square(final_data[inds,1]-lat) + np.square(final_data[inds,2]-lon)))/max_radius
 
-"""
-with open(outfile,'w') as f:
-    writer = csv.writer(f)
-    for row in dists:
-        writer.writerow(row)
-"""
-np.savetxt(outfile, dists, delimiter=',', fmt='%1.3f')
+#np.savetxt('initial_graph.csv', dists, delimiter=',', fmt='%1.3f')
+
+G = CreateGraph(n=num_stops, adj_matrix=dists, file=False)
+centers = k_centers(G, k)
+DrawGraph(G, centers)
+plt.show()
+
+# Create data for a fully connected graph with just the bus stops
+full_dists = np.zeros((k, k))
+for i in range(len(centers)):
+    lat = final_data[centers[i],1]
+    lon = final_data[centers[i],2]
+    full_dists[i,:] = np.sqrt((np.square(final_data[centers][:,1]-lat) + np.square(final_data[centers][:,2]-lon)))
+
+np.savetxt('final_full_graph.csv', full_dists, delimiter=',', fmt='%1.3f')

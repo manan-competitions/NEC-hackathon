@@ -33,13 +33,12 @@ def k_centers(G, n):
 	return centers
 
 # Create a weighted undirected graph G from a file or a variable
-def CreateGraph(n, k, file=True, fname=None, adj_matrix=None):
+def CreateGraph(n,file=True, fname=None, adj_matrix=None):
 	"""
 	Accepts either a file name or a list of args
 	Arguements:
 		file (Bool): whether to read from a file or from a variable
 		num_vertices(int): number of vertices
-		num_centers(int): number of centers (K)
 		if True:
 			fname(str): Path to file
 		else:
@@ -66,7 +65,8 @@ def CreateGraph(n, k, file=True, fname=None, adj_matrix=None):
 	G = nx.Graph()
 	for i in range(n) :
 		for j in range(i,n):
-			G.add_edge(i, j, length = wtMatrix[i][j])
+			if wtMatrix[i][j] != 0.0:
+				G.add_edge(i, j, length = wtMatrix[i][j])
 
 	return G
 
@@ -81,6 +81,7 @@ def DrawGraph(G, centers=[]):
 	#edge_labels = nx.get_edge_attributes(G, 'length')
 	#nx.draw_networkx_edge_labels(G, pos, edge_labels = edge_labels, font_size = 11) #prints weight on all the edges
 
+"""
 #main function
 if __name__ == "__main__":
 	n = 150
@@ -91,3 +92,4 @@ if __name__ == "__main__":
 	print(sorted(centers))
 	DrawGraph(G, centers)
 	plt.show()
+"""
