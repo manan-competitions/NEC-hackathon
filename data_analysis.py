@@ -76,4 +76,4 @@ for i in range(len(centers)):
 
 np.savetxt('dataset/initial_graph.csv', dists, delimiter=',', fmt='%1.3f')
 np.savetxt('dataset/final_full_graph.csv', full_dists, delimiter=',', fmt='%1.3f')
-np.savetxt('dataset/node_vals.csv', final_data[centers,3:], delimiter=',', fmt='%3.3f')
+np.savetxt('dataset/node_vals.csv', final_data[centers,3:]/np.sum(final_data[centers,3:], axis=0), delimiter=',', fmt='%3.3f')
