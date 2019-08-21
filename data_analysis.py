@@ -46,11 +46,6 @@ stop_dict = dict()
 for i in range(final_data[:,0].shape[0]):
     stop_dict[i] = final_data[:,0][i]
 
-# Save info for later debugging
-with open('helpers/labels.txt','w') as f:
-    pprint(final_cols, f)
-    pprint(stop_dict, f)
-
 #Create initial data
 dists = np.zeros((num_stops, num_stops))
 for i in range(final_data.shape[0]):
@@ -74,6 +69,11 @@ for i in range(len(centers)):
     lon = final_data[centers[i],2]
     full_dists[i,:] = np.sqrt((np.square(final_data[centers][:,1]-lat) + np.square(final_data[centers][:,2]-lon)))
 
-np.savetxt('dataset/initial_graph.csv', dists, delimiter=',', fmt='%1.3f')
+# Save info for later debugging
+with open('dataset/labels.txt','w') as f:
+    pprint(final_cols, f)
+    pprint(stop_dict, f)
+
 np.savetxt('dataset/final_full_graph.csv', full_dists, delimiter=',', fmt='%1.3f')
-np.savetxt('dataset/node_vals.csv', final_data[centers,3:]/np.sum(final_data[centers,3:], axis=0), delimiter=',', fmt='%3.3f')
+np.savetxt('dataset/node_vals.csv', final_data[centers,1:], delimiter=',', fmt='%i')
+np.savetxt('dataset/node_probs.csv', final_data[centers,3:]/np.sum(final_data[centers,3:], axis=0), delimiter=',', fmt='%3.3f')
