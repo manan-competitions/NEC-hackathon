@@ -60,7 +60,6 @@ for i in range(final_data.shape[0]):
     inds = np.where(np.square(final_data[:,1]-lat) + np.square(final_data[:,2]-lon) <= max_radius**2)[0]
     dists[i,inds] = np.sqrt((np.square(final_data[inds,1]-lat) + np.square(final_data[inds,2]-lon)))/max_radius
 
-#np.savetxt('initial_graph.csv', dists, delimiter=',', fmt='%1.3f')
 print(f'{np.min(dists)} < r = {max_radius} < {np.max(dists)}')
 print(100*np.sum((dists<=max_radius).astype(int))/dists.shape[0]**2, '\% of values are included in the graph')
 G = CreateGraph(n=num_stops, adj_matrix=dists, file=False)
@@ -75,5 +74,6 @@ for i in range(len(centers)):
     lon = final_data[centers[i],2]
     full_dists[i,:] = np.sqrt((np.square(final_data[centers][:,1]-lat) + np.square(final_data[centers][:,2]-lon)))
 
-np.savetxt('final_full_graph.csv', full_dists, delimiter=',', fmt='%1.3f')
-np.savetxt('node_vals.csv', final_data[centers,3:], delimiter=',', fmt='%4i')
+np.savetxt('dataset/initial_graph.csv', dists, delimiter=',', fmt='%1.3f')
+np.savetxt('dataset/final_full_graph.csv', full_dists, delimiter=',', fmt='%1.3f')
+np.savetxt('dataset/node_vals.csv', final_data[centers,3:], delimiter=',', fmt='%3.3f')
