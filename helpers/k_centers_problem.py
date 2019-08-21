@@ -13,20 +13,23 @@ def k_centers(G, n):
 	centers = []
 	cities = G.copy()
 	#add an arbitrary node, here, the first node,to the centers list
-	centers.append(list(G.nodes)[np.random.randint(low=0, high=n)])
+	centers.append(list(G.nodes)[np.random.randint(low=0, high=n-1)])
 	cities.remove_node(centers[0])
 	n = n-1 #since we have already added one center
 	#choose n-1 centers
 	while n!= 0:
 		city_dict = {}
 		for cty in cities:
+			#print(cities.nodes())
 			min_dist = float("inf")
 			for c in centers:
-				min_dist = min(min_dist,G[cty][c]['length'])
+				try:
+					min_dist = min(min_dist, G[c][cty]['length'])
+				except:
+					pass
 			city_dict[cty] = min_dist
 		#print city_dict
 		new_center = max(city_dict, key = lambda i: city_dict[i])
-		#print new_center
 		centers.append(new_center)
 		cities.remove_node(new_center)
 		n = n-1

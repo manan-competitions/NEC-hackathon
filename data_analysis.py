@@ -10,11 +10,11 @@ if len(sys.argv) < 4:
     print('Usage: python3 data_analysis.py [path/to/data].csv [num_stops] [num_centers]')
     exit(0)
 
-num_stops = sys.argv[2]
+num_stops = int(sys.argv[2])
 #infile = './dataset/may-trimester-2017-stop-ridership-ranking-saturday-csv-9.csv'
 infile = sys.argv[1]
-max_radius = 0.05
-k = sys.argv[3]
+max_radius = 0.3
+k = int(sys.argv[3])
 
 data = pd.read_csv(infile)
 data = data.drop(['DAY_OF_WEEK', 'STOP_NAME', 'RANK'], axis=1)
@@ -23,8 +23,9 @@ data_arr = np.array(data)
 #print(cols)
 
 stops = set()
-i = num_stops
 full_data = data_arr[:,1][np.argsort(data_arr[:,4])]
+num_stops = min(num_stops, full_data.shape[0])
+i = num_stops
 while len(stops) < num_stops:
     stops = set(full_data[-i:])
     i += 1
@@ -60,11 +61,12 @@ for i in range(final_data.shape[0]):
     dists[i,inds] = np.sqrt((np.square(final_data[inds,1]-lat) + np.square(final_data[inds,2]-lon)))/max_radius
 
 #np.savetxt('initial_graph.csv', dists, delimiter=',', fmt='%1.3f')
-
+print(f'{np.min(dists)} < r = {max_radius} < {np.max(dists)}')
+print(100*np.sum((dists<=max_radius).astype(int))/dists.shape[0]**2, '\% of values are included in the graph')
 G = CreateGraph(n=num_stops, adj_matrix=dists, file=False)
 centers = k_centers(G, k)
-DrawGraph(G, centers)
-plt.show()
+#DrawGraph(G, centers)
+#plt.show()
 
 # Create data for a fully connected graph with just the bus stops
 full_dists = np.zeros((k, k))
@@ -74,3 +76,4 @@ for i in range(len(centers)):
     full_dists[i,:] = np.sqrt((np.square(final_data[centers][:,1]-lat) + np.square(final_data[centers][:,2]-lon)))
 
 np.savetxt('final_full_graph.csv', full_dists, delimiter=',', fmt='%1.3f')
+np.savetxt('node_vals.csv', final_data[centers,3:], delimiter=',', fmt='%4i')
