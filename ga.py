@@ -2,10 +2,12 @@ import numpy as np
 import csv
 import networkx as nx
 from helpers.k_centers_problem import CreateGraph
-from helpers.route import Route,Routes
+from helpers.route import Route, Routes
 from numpy.random import choice
+from copy import deepcopy
 from pprint import pprint
 from tqdm import tqdm
+
 
 def get_node_vals(fname):
     with open(fname) as f:
@@ -56,15 +58,34 @@ def random_walk(s, d, l):
         probs = np.array(probs)
         probs = 1 / (1 + probs)
         probs = probs / np.sum(probs)
-        walk.append(
-            choice(np.concatenate([first[ind_f], last[ind_l]]), p=probs)
-        )
+        walk.append(choice(np.concatenate([first[ind_f], last[ind_l]]), p=probs))
     return walk + [d]
 
 
 def add_weights(grph, weights):
     for k, w in weights.items():
         grph.add_node(k, **w)
+
+
+def fitness(routes, sim_dg):
+    # Prevent this method from having side-effects
+    # Make a copy of the param
+    prev_dg = sim_dg
+    sim_dg = deepcopy(sim_dg)
+
+    deboard_dict = dict()
+    for route in routes.routes:
+        current_capacity = route.num * route.cap
+        for i in range(len(route.v) - 1):
+            current_capacity += deboard_dict.get(i, 0)
+            deboard_dict[i] = 0
+            for k in set(sim_dg[route.v[i]]).intersection(set(route.v[i + 1 :])):
+                people_boarding = min(sim_dg[route.v[i]][k]["weight"], current_capacity)
+                sim_dg[route.v[i]][k]["weight"] -= people_boarding
+                deboard_dict[k] = deboard_dict.get(k, 0) + people_boarding
+                current_capacity -= people_boarding
+    return (prev_dg.size(weight="weight") - sim_dg.size(weight="weight")) / routes.cap
+
 
 def simulate_people(G, num_of_people):
     arr_out = [x for y, x in nx.get_node_attributes(G, "prob_out").items()]
@@ -78,8 +99,12 @@ def simulate_people(G, num_of_people):
     for i in edges:
         if i[0] != i[1]:
             counts[i] = counts.get(i, 0) + 1
+    DG = nx.DiGraph()
+    for i, j in counts.items():
+        x, y = i
+        DG.add_edge(x, y, weight=j)
+    return DG
 
-    return counts
 
 ## -- MAIN -- ##
 
@@ -94,14 +119,15 @@ add_weights(G, on_off_dict)
 
 
 pop_size = 100
-walk_length = [7,15]
-num_routes = [6,12]
+walk_length = [7, 15]
+num_routes = [6, 12]
 num_ppl = 50000
 cap = 60
 ppl = simulate_people(G, num_ppl)
 
 pop = []
-print('Generating initial routes...')
+print("Generating initial routes...")
+Route.initialize_class(G)
 for i in tqdm(range(pop_size)):
     source, destination = choice(list(G.nodes()), size=2)
     routenum = np.random.randint(num_routes[0], num_routes[1] + 1)
