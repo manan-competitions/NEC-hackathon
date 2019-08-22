@@ -19,13 +19,14 @@ class Route(object):
     Attributes:
         num(int): Number of buses running on this routes
         num_bits(int): number of bits to use in the binary description of num
+        cap(int): capacity of this route
         v(list): (ordered) list of vertices covered in this route
     Methods:
         mutate(G,mut_prob): Mutate the given route
         crossover(route): Crossover current route with the specified route
     """
-    def __init__(self, vertices, num=None):
-        self.num_bits = 3
+    def __init__(self, cap, vertices, num=None):
+        self.num_bits = 4
         if not num:
             self.num = np.random.randint(1,2**self.num_bits)
         else:
@@ -88,10 +89,12 @@ class Routes(object):
     """
     Collection of routes to be used as a population for the final Genetic Algorithm
     Attributes:
+        routes: list of bus routes (class Route)
+        num_routes: Number of such routes
     """
-    def __init__(self, num_routes, list_routes):
-        self.num_routes = num_routes
+    def __init__(self, list_routes):
         self.routes = list_routes
+        self.num_routes = len(list_routes)
 
     def __str__(self):
         return pformat([self.num_routes] + [r for r in self.routes])

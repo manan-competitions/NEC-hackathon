@@ -2,10 +2,10 @@ import numpy as np
 import csv
 import networkx as nx
 from helpers.k_centers_problem import CreateGraph
-from helpers.route import Route
+from helpers.route import Route,Routes
 from numpy.random import choice
 from pprint import pprint
-
+from tqdm import tqdm
 
 def get_node_vals(fname):
     with open(fname) as f:
@@ -57,7 +57,7 @@ def random_walk(s, d, l):
         probs = 1 / (1 + probs)
         probs = probs / np.sum(probs)
         walk.append(
-            np.random.choice(np.concatenate([first[ind_f], last[ind_l]]), p=probs)
+            choice(np.concatenate([first[ind_f], last[ind_l]]), p=probs)
         )
     return walk + [d]
 
@@ -65,7 +65,6 @@ def random_walk(s, d, l):
 def add_weights(grph, weights):
     for k, w in weights.items():
         grph.add_node(k, **w)
-
 
 def simulate_people(G, num_of_people):
     arr_out = [x for y, x in nx.get_node_attributes(G, "prob_out").items()]
@@ -79,34 +78,35 @@ def simulate_people(G, num_of_people):
     for i in edges:
         if i[0] != i[1]:
             counts[i] = counts.get(i, 0) + 1
-    return counts
-    # DG = nx.DiGraph()
-    # for i, j in counts.items():
-    #     x, y = i
-    #     DG.add_edge(x, y, weight=j)
-    # return DG
 
+    return counts
 
 ## -- MAIN -- ##
 
 G = CreateGraph(75, fname="./dataset/final_full_graph.csv")
 
 on_off = get_node_vals("./dataset/node_vals.csv")
+
 on_off_dict = {
     x: {"prob_in": on_off[x][0], "prob_out": on_off[x][1]} for x in range(len(on_off))
 }
 add_weights(G, on_off_dict)
-choice
+
 
 pop_size = 100
-walk_length = [5, 12]
+walk_length = [7,15]
+num_routes = [6,12]
+num_ppl = 50000
+cap = 60
+ppl = simulate_people(G, num_ppl)
 
 pop = []
-for i in range(pop_size):
-    source, destination = np.random.choice(list(G.nodes()), size=2)
-    length = np.random.randint(walk_length[0], walk_length[1] + 1)
-    pop.append(Route(random_walk(source, destination, length)))
-"""
-for i in range(5):
-    print(pop[i])
-"""
+print('Generating initial routes...')
+for i in tqdm(range(pop_size)):
+    source, destination = choice(list(G.nodes()), size=2)
+    routenum = np.random.randint(num_routes[0], num_routes[1] + 1)
+    rts = []
+    for i in range(routenum):
+        length = np.random.randint(walk_length[0], walk_length[1] + 1)
+        rts.append(Route(cap, random_walk(source, destination, length)))
+    pop.append(Routes(rts))
