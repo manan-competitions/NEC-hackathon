@@ -69,7 +69,7 @@ def add_weights(grph, weights):
         grph.add_node(k, **w)
 
 
-def fitness(routes, sim_dg, c1, c2, c3, opt_bus):
+def fitness(routes, sim_dg, c1, c2, c3, opt_bus, components=False):
     # Prevent this method from having side-effects
     # Make a copy of the param
     prev_dg = sim_dg
@@ -87,8 +87,9 @@ def fitness(routes, sim_dg, c1, c2, c3, opt_bus):
                 deboard_dict[k] = deboard_dict.get(k, 0) + people_boarding
                 current_capacity -= people_boarding
     num_ppl = (prev_dg.size(weight="weight") - sim_dg.size(weight="weight")) / routes.cap
-    return c1*num_ppl + c2*opt_bus/np.abs(routes.num_buses - opt_bus) + c3/routes.cum_len
-    #return c1*num_ppl, c2*opt_bus/np.abs(routes.num_buses - opt_bus), c3/routes.cum_len
+    if components:
+        return num_ppl, routes.num_buses, routes.cum_len
+    return c1*num_ppl + c2/(1+np.abs(routes.num_buses - opt_bus)) + c3/(1+routes.cum_len)
 
 def simulate_people(G, num_of_people):
     arr_out = [x for y, x in nx.get_node_attributes(G, "prob_out").items()]
@@ -127,15 +128,16 @@ num_routes = [6, 12]
 num_ppl = 50000
 cap = 60
 ppl = simulate_people(G, num_ppl)
-c1,c2,c3 = (50,25,100)
-opt_bus = 10
+# c1: [0,1]*50, c2: [0,1]*10 c3: avg_len = 10.98
+c1,c2,c3 = (50,20,100)
+opt_bus = 20
 elite = 0.1
 iter = 10
 crossover_perc = 0.9
-mut_prob = 0.15
+mutation_prob = 0.15
 
 pop = []
-print("Generating initial routes...")
+print("Generating initial routes ...")
 Route.initialize_class(G)
 for i in tqdm(range(pop_size)):
     source, destination = choice(list(G.nodes()), size=2)
@@ -151,42 +153,48 @@ Route.initialize_class(G)
 Routes.initialize_class(G)
 
 # Use a GA to solve the problem
-curr_pop = deepcopy(pop)
-new_pop = []
+print('\nTraining the Genetic Algorithm ...')
+new_pop = deepcopy(pop)
 for i in range(iter):
     print(f'Iteration {i+1} / {iter}')
-    if i!=0:
-        curr_pop = deepcopy(new_pop)
-        new_pop = []
+    curr_pop = deepcopy(new_pop)
+    new_pop = []
 
     # get fitness of everyone
-    print('-- Fitness')
-    fit = [(p,fitness(p, ppl, c1, c2, c3, opt_bus)) for p in pop]
+#    print('-- Fitness')
+    fit = [(p,fitness(p, ppl, c1, c2, c3, opt_bus)) for p in curr_pop]
+
     #fit = map(fitness, pop, ppl, c1, c2, c3, opt_bus)
     fit.sort(reverse=True,key=lambda x: x[1])
-    print('--', fit[0][0], fit[0][1])
 
     # Transfer elite directly to the next generation
     elite_num = int(elite*pop_size)
     elite_pop = []
     for j in range(elite_num):
-        elite_pop.append(fit[j][0])
-    print('-- Selection')
+        elite_pop.append(deepcopy(fit[j][0]))
+#    print('-- Selection')
+
     # Select the rest according to the fitness function (Selection)
     new_pop = choice(curr_pop, size=pop_size-elite_num, p=[f[1] for f in fit]/np.sum([f[1] for f in fit]))
 
-    print('-- Crossover')
-    # Crossover
+#    print('-- Crossover')
+    # Crossover the rest
     cross_size = int(crossover_perc*len(new_pop))
     cross_size += cross_size%2
     cross_routes = choice(new_pop, size=cross_size)
     for i in range(0,cross_size,2):
-        pop[i].crossover(pop[i+1])
+        curr_pop[i].crossover(curr_pop[i+1])
 
-    print('-- Mutation')
-    # Mutation
+#    print('-- Mutation')
+    # Mutatie every elemnt (may not take place actually)
     for p in new_pop:
-        p.mutate()
+        p.mutate(mutation_prob)
 
     new_pop = np.concatenate([new_pop, elite_pop])
+    best = fit[0][0]
     print(f'-- Average: {np.mean([f[1] for f in fit])} Best: {fit[0][1]} Worst: {fit[-1][1]}')
+
+print('\nFinal Solution:')
+print(best)
+opt_seats_taken, opt_num_bus, opt_cum_len = fitness(best, ppl, c1, c2, c3, opt_bus, components=True)
+print(f'\nThis route has {opt_num_bus} buses, On average, {opt_seats_taken}% of seats are occupied, Total length of all routes combined is {round(opt_cum_len,2)} km')
