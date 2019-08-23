@@ -3,7 +3,8 @@ import numpy as np
 from pprint import pprint
 import csv
 import sys
-from helpers.k_centers_problem import CreateGraph, k_centers, DrawGraph
+from helpers.k_centers_problem import k_centers, DrawGraph
+from helpers.utils import CreateGraph
 import matplotlib.pyplot as plt
 
 def dist_km(lat1, lon1, lat2, lon2):

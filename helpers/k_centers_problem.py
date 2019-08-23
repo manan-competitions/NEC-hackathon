@@ -35,43 +35,6 @@ def k_centers(G, n):
 		n = n-1
 	return centers
 
-# Create a weighted undirected graph G from a file or a variable
-def CreateGraph(n,file=True, fname=None, adj_matrix=None):
-	"""
-	Accepts either a file name or a list of args
-	Arguements:
-		file (Bool): whether to read from a file or from a variable
-		num_vertices(int): number of vertices
-		if True:
-			fname(str): Path to file
-		else:
-			adj_matrix(list/array): list of lists or a np array of shape(n,n)
-	Returns:
-		G: A weighted undirected graph
-	"""
-
-	if file:
-		with open(fname) as f:
-			wtMatrix = []
-			reader = csv.reader(f)
-			for row in reader:
-				list1 = list(map(float, row))
-				wtMatrix.append(list1)
-		wtMatrix = np.array(wtMatrix)
-	else:
-			wtMatrix = np.array(adj_matrix)
-
-	if wtMatrix.shape != (n,n):
-		raise Exception(f'Incorrect Shape: Expected ({n},{n}) but got {wtMatrix.shape} instead')
-
-	#Adds egdes along with their weights to the graph
-	G = nx.Graph()
-	for i in range(n) :
-		for j in range(i,n):
-			G.add_edge(i, j, length = wtMatrix[i][j], )
-
-	return G
-
 #draws the graph and displays the weights on the edges
 def DrawGraph(G, centers=[]):
 	pos = nx.spring_layout(G)

@@ -51,6 +51,14 @@ class Route(object):
             cum_sum += Route.world[self.v[i]][self.v[i + 1]]["length"]
         return cum_sum
 
+    @property
+    def cum_len(self):
+        cum_sum = 0
+        for i in range(len(self.v) - 1):
+            #print(self.v[i], self.v[i + 1])
+            cum_sum += Route.world[self.v[i]][self.v[i + 1]]["length"]
+        return cum_sum
+
     def __init__(self, cap, vertices, num=None):
         self.num_bits = 4
         if not num:
