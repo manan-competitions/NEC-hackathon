@@ -68,8 +68,7 @@ def CreateGraph(n,file=True, fname=None, adj_matrix=None):
 	G = nx.Graph()
 	for i in range(n) :
 		for j in range(i,n):
-			if wtMatrix[i][j] != 0.0:
-				G.add_edge(i, j, length = wtMatrix[i][j])
+			G.add_edge(i, j, length = wtMatrix[i][j], )
 
 	return G
 

@@ -17,6 +17,10 @@ def get_nbrs(node, G, first=None, last=None):
     else:
         return nbrs
 
+def remove_duplicates(seq):
+    seen = set()
+    seen_add = seen.add
+    return [x for x in seq if not (x in seen or seen_add(x))]
 
 class Route(object):
     """
@@ -27,7 +31,7 @@ class Route(object):
         cap(int): capacity of this route
         v(list): (ordered) list of vertices covered in this route
     Methods:
-        mutate(G,mut_prob): Mutate the given route
+        mutate(mut_prob): Mutate the given route
         crossover(route): Crossover current route with the specified route
     """
 
@@ -43,7 +47,7 @@ class Route(object):
     def cum_len(self):
         cum_sum = 0
         for i in range(len(self.v) - 1):
-            print(self.v[i], self.v[i + 1])
+            #print(self.v[i], self.v[i + 1])
             cum_sum += Route.world[self.v[i]][self.v[i + 1]]["length"]
         return cum_sum
 
@@ -62,7 +66,9 @@ class Route(object):
     # To enable better printing
     __repr__ = __str__
 
-    def mutate(self, G, mut_prob=0.05):
+    def mutate(self, mut_prob=0.05):
+        if Route.initialized:
+            G = Route.world
         # Mutate the number of buses
         bin_num = list(str(get_bin(self.num, self.num_bits)))
         for i in range(len(bin_num)):
@@ -71,7 +77,6 @@ class Route(object):
         self.num = 4 * int(bin_num[0]) + 2 * int(bin_num[1]) + 1 * int(bin_num[2])
 
         # Mutate the route
-        print(self.v)
         for i in range(len(self.v)):
             if np.random.rand() < mut_prob:
                 nbrs = get_nbrs(self.v[i], G, first=len(self.v) + 1)
@@ -81,13 +86,11 @@ class Route(object):
                 probs = np.array([G[self.v[i]][n]["length"] for n in nbrs])
                 probs = probs / np.sum(probs)
                 self.v[i] = np.random.choice(nbrs, p=probs)
-        print(self.v)
 
     def crossover(self, other_route):
         v1 = set(self.v[1:-1])
         v2 = set(other_route.v[1:-1])
         common = list(v1.intersection(v2))
-        print(common)
 
         if len(common) == 0:
             return
@@ -97,7 +100,7 @@ class Route(object):
             ind_2 = other_route.v.index(common[0])
             temp_v = self.v
             self.v = self.v[:ind_1] + other_route.v[ind_2:]
-            route.v = other_route.v[:ind_2] + temp_v[ind_1:]
+            other_route.v = other_route.v[:ind_2] + temp_v[ind_1:]
 
         else:
             elem1, elem2 = np.random.choice(common, size=2, replace=False)
@@ -109,6 +112,13 @@ class Route(object):
             self.v[ind_1_l + 1 : ind_1_u] = other_route.v[ind_2_l + 1 : ind_2_u]
             other_route.v[ind_2_l + 1 : ind_2_u] = temp_v[ind_1_l + 1 : ind_1_u]
 
+            """
+            self.v = remove_duplicates(self.v)
+            self.num = len(self.v)
+
+            other_route.v = remove_duplicates(other_route.v)
+            other_route.num = len(other_route.v)
+            """
 
 class Routes(object):
     """
@@ -118,12 +128,27 @@ class Routes(object):
         num_routes: Number of such routes
     """
 
+    world = None
+    initialized = False
+
+    @staticmethod
+    def initialize_class(G):
+        Routes.world = deepcopy(G)
+        Routes.initialized = True
+
     @property
     def cap(self):
         cum_cap = 0
         for route in self.routes:
             cum_cap += route.cap * route.num
         return cum_cap
+
+    @property
+    def num_buses(self):
+        cum_num = 0
+        for route in self.routes:
+            cum_num += route.num
+        return cum_num
 
     def __init__(self, list_routes):
         self.routes = list_routes
@@ -134,11 +159,14 @@ class Routes(object):
 
     __repr__ = __str__
 
-    def mutate(self, G, mut_prob=0.05, cross_perc=0.3):
+    def mutate(self, mut_prob=0.05, cross_perc=0.3):
+        if Routes.initialized:
+            G = Routes.world
+
         # Mutate individual routes
         for route in self.routes:
             if np.random.rand() < mut_prob:
-                route.mutate(G, mut_prob)
+                route.mutate( mut_prob)
 
         # internally Crossover some routes
         num_cross = int(cross_perc * self.num_routes)
@@ -161,9 +189,9 @@ class Routes(object):
             range(other_routes.num_routes), replace=False, size=num_transfer
         )
         for i in range(num_transfer):
-            temp = self.routes[ind1]
-            self.routes[ind1] = other_routes[ind2]
-            other_routes[ind2] = temp
+            temp = self.routes[ind_1[i]]
+            self.routes[ind_1[i]] = other_routes.routes[ind_2[i]]
+            other_routes.routes[ind_2[i]] = temp
 
         # Crossover some routes
         cross_1 = np.random.choice(self.routes, replace=False, size=num_cross)
@@ -176,4 +204,4 @@ class Routes(object):
         cum_sum = 0
         for route in self.routes:
             cum_sum += route.cum_len
-        return cum_len
+        return cum_sum

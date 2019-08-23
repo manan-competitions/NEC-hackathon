@@ -6,6 +6,16 @@ import sys
 from helpers.k_centers_problem import CreateGraph, k_centers, DrawGraph
 import matplotlib.pyplot as plt
 
+def dist_km(lat1, lon1, lat2, lon2):
+    # approximate radius of earth in km
+    R = 6373.0
+    dlon = np.radians(lon2 - lon1)
+    dlat = np.radians(lat2 - lat1)
+
+    a = np.sin(dlat / 2)**2 + np.cos(lat1) * np.cos(lat2) * np.sin(dlon / 2)**2
+    c = 2 * np.arctan2(np.sqrt(a), np.sqrt(1 - a))
+    return R*c
+
 if len(sys.argv) < 4:
     print('Usage: python3 data_analysis.py [path/to/data].csv [num_stops] [num_centers]')
     exit(0)
@@ -13,7 +23,7 @@ if len(sys.argv) < 4:
 num_stops = int(sys.argv[2])
 #infile = './dataset/may-trimester-2017-stop-ridership-ranking-saturday-csv-9.csv'
 infile = sys.argv[1]
-max_radius = 0.3
+max_radius = 1
 k = int(sys.argv[3])
 
 data = pd.read_csv(infile)
@@ -52,11 +62,11 @@ for i in range(final_data.shape[0]):
     stop = final_data[i,0]
     lat = final_data[i,1]
     lon = final_data[i,2]
-    inds = np.where(np.square(final_data[:,1]-lat) + np.square(final_data[:,2]-lon) <= max_radius**2)[0]
-    dists[i,inds] = np.sqrt((np.square(final_data[inds,1]-lat) + np.square(final_data[inds,2]-lon)))/max_radius
-
+    inds = np.where(dist_km(final_data[:,1], lat, final_data[:,2], lon) <= max_radius)[0]
+    #dists[i,inds] = np.sqrt((np.square(final_data[inds,1]-lat) + np.square(final_data[inds,2]-lon)))/max_radius
+    dists[i,inds] = dist_km(final_data[inds,1], lat, final_data[inds,2], lon) / max_radius
 print(f'{np.min(dists)} < r = {max_radius} < {np.max(dists)}')
-print(100*np.sum((dists<=max_radius).astype(int))/dists.shape[0]**2, '\% of values are included in the graph')
+print(100*np.sum((dists<=max_radius).astype(int))/dists.shape[0]**2, '% of values are included in the graph')
 G = CreateGraph(n=num_stops, adj_matrix=dists, file=False)
 centers = k_centers(G, k)
 #DrawGraph(G, centers)
