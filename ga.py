@@ -7,8 +7,9 @@ from pprint import pprint
 from tqdm import tqdm
 import json
 import sys
+from helpers.utils import get_node_vals, get_nbrs, random_walk, add_weights, \
+                          fitness, simulate_people, GA, CreateGraph, plot_diff
 from helpers.route import Route, Routes
-from helpers.utils import get_node_vals, get_nbrs, random_walk, add_weights, fitness, simulate_people, GA, CreateGraph
 import matplotlib.pyplot as plt
 
 if len(sys.argv) < 2:
@@ -37,9 +38,10 @@ consts = {
 opt_bus = 20
 max_trips = 5 # no of times a bus can run on a specific route
 elite = 0.1
-iter = 5
+iter = 10
 crossover_perc = 0.9
 mutation_prob = 0.15
+mode = 'people'
 
 pop = []
 print("Generating initial routes ...")
@@ -60,15 +62,17 @@ Routes.initialize_class(G)
 # Use a GA to solve the problem
 best, ppl, final_pop = GA(iter, pop, pop_size, G, num_ppl, consts, \
                             opt_bus, max_trips, elite, mutation_prob, \
-                            crossover_perc, mode='people')
+                            crossover_perc, mode=mode, plot=True)
 
 print("\nFinal Solution:")
 print(best)
 best_fit = fitness(best, ppl, G, consts, opt_bus, max_trips, components=True)
 print(f'\nThis route serves {100*best_fit[0]/best.cap}% ({best_fit[0]}) of people , About {best_fit[1]} buses run  with a total capacity of {best.cap} and the average length of a bus route is {best_fit[2]} km')
 
-"""
 data_out = { 'data': [(int(route.num), [int(r) for r in route.v_disabled]) for route in best.routes] }
-with open('data/{pre}_optimal_routes.json','w') as f:
+
+plot_diff(best, final_pop[-1], ppl, G, consts, opt_bus, max_trips)
+
+with open(f'data/{pre}_optimal_routes_{mode}.json','w') as f:
     json.dump(data_out, f, indent=2)
-"""
+    print('Done')

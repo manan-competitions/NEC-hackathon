@@ -3,6 +3,43 @@ import csv
 import networkx as nx
 from numpy.random import choice
 from copy import deepcopy
+from tqdm import tqdm
+import matplotlib.pyplot as plt
+from matplotlib.pyplot import cm
+from helpers.route import Route, Routes
+
+def plot_diff(route1, route2, ppl, G, consts, opt_bus, max_trips):
+	G_1 = fitness(route1, ppl, G, consts, opt_bus, max_trips, components=False,mode='people', ret_graph=True)
+	G_2 = fitness(route2, ppl, G, consts, opt_bus, max_trips, components=False,mode='people', ret_graph=True)
+	G_diff = routes_diff(G_1, G_2, 'weight')
+
+	count_pos = 0
+	count_neg = 0
+	for k in nx.get_edge_attributes(G_diff,name='weight').keys():
+		if G_diff[k[0]][k[1]]['weight'] == 0:
+			G_diff.remove_edge(*k)
+		elif G_diff[k[0]][k[1]]['weight'] > 0:
+			count_pos += G_diff[k[0]][k[1]]['weight']
+		elif G_diff[k[0]][k[1]]['weight'] < 0:
+			count_neg -= G_diff[k[0]][k[1]]['weight']
+
+	print(count_pos, count_neg)
+
+	pos = nx.spring_layout(G)
+
+	#color = range(G_diff.size())
+	color = [G_diff[u][v]['weight'] for u,v in G_diff.edges()]
+
+	nx.draw(G_diff, pos, node_color='Y', edge_color=color,
+			width=1, edge_cmap=cm.get_cmap('bwr'), with_labels=True)
+	plt.show()
+
+def get_routes_csv(fname, cap=150):
+	rs = []
+	with open(fname) as f:
+		for row in csv.reader(f):
+			rs.append(Route(cap, [int(r) for r in row]))
+		return Routes(rs)
 
 # Create a weighted undirected graph G from a file or a variable
 def CreateGraph(n, pre, file=True, fname=None, adj_matrix=None, node_prob=False):
@@ -83,7 +120,6 @@ def get_nbrs(G, node, first=None, last=None):
 	else:
 		return nbrs
 
-
 def random_walk(G, s, d, l):
 	walk = [s]
 	while len(walk) != l - 1:
@@ -126,7 +162,7 @@ def add_weights(grph, weights):
 	for k, w in weights.items():
 		grph.add_node(k, **w)
 
-def fitness(routes, sim_dg, G, consts, opt_bus, max_trips, components=False,mode='optimal'):
+def fitness(routes, sim_dg, G, consts, opt_bus, max_trips, components=False,mode='optimal', ret_graph=False):
 	c1, c2, c3 = consts[mode]
 	# Prevent this method from having side-effects
 	# Make a copy of the param
@@ -159,6 +195,9 @@ def fitness(routes, sim_dg, G, consts, opt_bus, max_trips, components=False,mode
 
 	num_buses_per_route = np.sum([np.ceil(route.num/max_trips) for route in routes.routes])
 
+	if ret_graph:
+		return sim_dg
+
 	if components:
 		return num_ppl, num_buses_per_route, routes.cum_len/routes.num_buses
 
@@ -182,12 +221,16 @@ def simulate_people(G, num_of_people):
 		DG.add_edge(x, y, weight=j)
 	return DG
 
-def GA(iter, pop, pop_size, G, num_ppl, consts, opt_bus, max_trips, elite, mutation_prob, crossover_perc, mode='optimal'):
+def GA(iter, pop, pop_size, G, num_ppl, consts, opt_bus, max_trips, elite, mutation_prob, crossover_perc, mode='optimal', plot=False):
 	print(f'\nTraining the Genetic Algorithm in mode: {mode} ...')
 	new_pop = deepcopy(pop)
 	ppl = simulate_people(G, num_ppl)
-	for i in range(iter):
-		print(f'Iteration {i+1} / {iter}')
+	avg_fit = []
+	best_fit = []
+	worst_fit = []
+
+	for i in tqdm(range(iter)):
+#		print(f'Iteration {i+1} / {iter}')
 		curr_pop = deepcopy(new_pop)
 		new_pop = []
 
@@ -205,7 +248,6 @@ def GA(iter, pop, pop_size, G, num_ppl, consts, opt_bus, max_trips, elite, mutat
 	#    print('-- Selection')
 
 		# Select the rest according to the fitness function (Selection)
-		print(fit[0][1])
 		new_pop = choice(curr_pop, size=pop_size-elite_num, p=[f[1] for f in fit]/np.sum([f[1] for f in fit]))
 
 	#    print('-- Crossover')
@@ -223,10 +265,20 @@ def GA(iter, pop, pop_size, G, num_ppl, consts, opt_bus, max_trips, elite, mutat
 
 		new_pop = np.concatenate([new_pop, elite_pop])
 		best = fit[0][0]
-		print(f'-- Average: {np.mean([f[1] for f in fit])} Best: {fit[0][1]} Worst: {fit[-1][1]}')
+		#print(f'-- Average: {np.mean([f[1] for f in fit])} Best: {fit[0][1]} Worst: {fit[-1][1]}')
+		avg_fit.append(np.mean([f[1] for f in fit]))
+		best_fit.append(fit[0][1])
+		worst_fit.append(fit[-1][1])
+
+	if plot:
+		plt.plot(avg_fit, color='b')
+		plt.plot(best_fit, color='g')
+		plt.plot(worst_fit, color='r')
+		plt.show()
+		plt.legend()
 	return best, ppl, new_pop
 
-def directed_weighted_graph_diff(G1, G2, weight):
+def routes_diff(G1, G2, weight):
 	G3 = nx.DiGraph()
 	G1 = deepcopy(G1)
 	G2 = deepcopy(G2)
