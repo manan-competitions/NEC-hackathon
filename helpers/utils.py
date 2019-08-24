@@ -28,46 +28,50 @@ def CreateGraph(n, pre, file=True, fname=None, adj_matrix=None, node_prob=False)
 				wtMatrix.append(list1)
 		wtMatrix = np.array(wtMatrix)
 	else:
-			wtMatrix = np.array(adj_matrix)
+		wtMatrix = np.array(adj_matrix)
 
-	if wtMatrix.shape != (n,n):
-		raise Exception(f'Incorrect Shape: Expected ({n},{n}) but got {wtMatrix.shape} instead')
+	if wtMatrix.shape != (n, n):
+		raise Exception(
+			f"Incorrect Shape: Expected ({n},{n}) but got {wtMatrix.shape} instead"
+		)
 
-	#Adds egdes along with their weights to the graph
+	# Adds egdes along with their weights to the graph
 	G = nx.Graph()
-	for i in range(n) :
-		for j in range(i,n):
-			G.add_edge(i, j, length = wtMatrix[i][j])
+	for i in range(n):
+		for j in range(i, n):
+			G.add_edge(i, j, length=wtMatrix[i][j])
 
 	# Add individual node probabilites
 	if node_prob:
-		on_off = get_node_vals(f'./data/{pre}_node_probs.csv')
+		on_off = get_node_vals(f"./data/{pre}_node_probs.csv")
 		on_off_dict = {
-			x: {"prob_in": on_off[x][0], "prob_out": on_off[x][1]} for x in range(len(on_off))
+			x: {"prob_in": on_off[x][0], "prob_out": on_off[x][1]}
+			for x in range(len(on_off))
 		}
 		add_weights(G, on_off_dict)
 	return G
 
 def dist_km(lat1, lat2, lon1, lon2):
-    # approximate radius of earth in km
-    R = 6373.0
-    dlon = np.radians(lon2 - lon1)
-    dlat = np.radians(lat2 - lat1)
+	# approximate radius of earth in km
+	R = 6373.0
+	dlon = np.radians(lon2 - lon1)
+	dlat = np.radians(lat2 - lat1)
 
-    a = np.sin(dlat / 2)**2 + np.cos(lat1) * np.cos(lat2) * np.sin(dlon / 2)**2
-    c = 2 * np.arctan2(np.sqrt(a), np.sqrt(1 - a))
-    return R*c
+	a = np.sin(dlat / 2)**2 + np.cos(lat1) * np.cos(lat2) * np.sin(dlon / 2)**2
+	c = 2 * np.arctan2(np.sqrt(a), np.sqrt(1 - a))
+	return R*c
 
 def remove_duplicates(seq):
-    seen = set()
-    seen_add = seen.add
-    return [x for x in seq if not (x in seen or seen_add(x))]
+	seen = set()
+	seen_add = seen.add
+	return [x for x in seq if not (x in seen or seen_add(x))]
 
 def get_node_vals(fname):
 	with open(fname) as f:
 		data = list(csv.reader(f))
 	data = [list(map(float, d)) for d in data]
 	return np.array(data)
+
 
 def get_nbrs(G, node, first=None, last=None):
 	nbrs = sorted(list(G.neighbors(0)), key=lambda n: G[0][n]["length"], reverse=True)
@@ -79,11 +83,12 @@ def get_nbrs(G, node, first=None, last=None):
 	else:
 		return nbrs
 
+
 def random_walk(G, s, d, l):
 	walk = [s]
 	while len(walk) != l - 1:
 		node = walk[-1]
-		first = np.array(get_nbrs(G, node, first=len(walk)+1))
+		first = np.array(get_nbrs(G, node, first=len(walk) + 1))
 		last = np.array(get_nbrs(G, node, first=10))
 
 		if d in first:
@@ -121,13 +126,13 @@ def add_weights(grph, weights):
 	for k, w in weights.items():
 		grph.add_node(k, **w)
 
-def fitness(routes, sim_dg, consts, opt_bus, max_trips, components=False,mode='optimal'):
+def fitness(routes, sim_dg, G, consts, opt_bus, max_trips, components=False,mode='optimal'):
 	c1, c2, c3 = consts[mode]
 	# Prevent this method from having side-effects
 	# Make a copy of the param
 	prev_dg = sim_dg
 	sim_dg = deepcopy(sim_dg)
-
+	miles_traveled = dict()
 	deboard_dict = dict()
 	for route in routes.routes:
 		current_capacity = route.num * route.cap
@@ -135,7 +140,18 @@ def fitness(routes, sim_dg, consts, opt_bus, max_trips, components=False,mode='o
 			current_capacity += deboard_dict.get(i, 0)
 			deboard_dict[i] = 0
 			for k in set(sim_dg[route.v_disabled[i]]).intersection(set(route.v_disabled[i + 1 :])):
+				p = route.v.index(k)
 				people_boarding = min(sim_dg[route.v_disabled[i]][k]["weight"], current_capacity)
+				miles_traveled[(i, k)] = (
+					miles_traveled.get((i, k), 0)
+					+ sum(
+						[
+							G[x[0]][x[1]]["length"]
+							for x in zip(route.v[i:p], route.v[i + 1 : p + 1])
+						]
+					)
+					* people_boarding
+				)
 				sim_dg[route.v_disabled[i]][k]["weight"] -= people_boarding
 				deboard_dict[k] = deboard_dict.get(k, 0) + people_boarding
 				current_capacity -= people_boarding
@@ -146,7 +162,7 @@ def fitness(routes, sim_dg, consts, opt_bus, max_trips, components=False,mode='o
 	if components:
 		return num_ppl, num_buses_per_route, routes.cum_len/routes.num_buses
 
-	return max(0, c1*num_ppl + c2*num_buses_per_route + c3*routes.cum_len/routes.num_buses
+	return max(0, c1*num_ppl + c2*num_buses_per_route + c3*routes.cum_len/routes.num_buses)
 
 def simulate_people(G, num_of_people):
 	arr_out = [x for y, x in nx.get_node_attributes(G, "prob_out").items()]
@@ -177,7 +193,7 @@ def GA(iter, pop, pop_size, G, num_ppl, consts, opt_bus, max_trips, elite, mutat
 
 		# get fitness of everyone
 	#    print('-- Fitness')
-		fit = [(p,fitness(p, ppl, consts, opt_bus, max_trips, mode=mode)) for p in curr_pop]
+		fit = [(p,fitness(p, ppl, G, consts, opt_bus, max_trips, mode=mode)) for p in curr_pop]
 
 		fit.sort(reverse=True,key=lambda x: x[1])
 
@@ -209,3 +225,24 @@ def GA(iter, pop, pop_size, G, num_ppl, consts, opt_bus, max_trips, elite, mutat
 		best = fit[0][0]
 		print(f'-- Average: {np.mean([f[1] for f in fit])} Best: {fit[0][1]} Worst: {fit[-1][1]}')
 	return best, ppl, new_pop
+
+def directed_weighted_graph_diff(G1, G2, weight):
+	G3 = nx.DiGraph()
+	G1 = deepcopy(G1)
+	G2 = deepcopy(G2)
+	for node in G1:
+		for key in G2:
+			G1Val = 0
+			G2Val = 0
+			try:
+				G1Val = G1[node][key][weight]
+			except:
+				G1Val = 0
+			finally:
+				try:
+					G2Val = G2[node][key][weight]
+				except:
+					G2val = 0
+				finally:
+					G3.add_edge(node, key, weight=G1Val - G2Val)
+	return G3

@@ -12,7 +12,7 @@ from helpers.utils import get_node_vals, get_nbrs, random_walk, add_weights, fit
 import matplotlib.pyplot as plt
 
 if len(sys.argv) < 2:
-    print('Usage: python3 ga.py [prefix for in/out file]')
+    print("Usage: python3 ga.py [prefix for in/out file]")
     exit(0)
 
 pre = sys.argv[1]
@@ -62,10 +62,10 @@ best, ppl, final_pop = GA(iter, pop, pop_size, G, num_ppl, consts, \
                             opt_bus, max_trips, elite, mutation_prob, \
                             crossover_perc, mode='people')
 
-print('\nFinal Solution:')
+print("\nFinal Solution:")
 print(best)
-best_fit = fitness(best, ppl, consts, opt_bus, max_trips, components=True)
-print(f'\nThis route serves {100*best_fit[0]/best.cap% ({best_fit[0]}) of people , About {best_fit[1]} buses run  with a total capacity of {best.cap} and the average length of a bus route is {best_fit[2]} km')
+best_fit = fitness(best, ppl, G, consts, opt_bus, max_trips, components=True)
+print(f'\nThis route serves {100*best_fit[0]/best.cap}% ({best_fit[0]}) of people , About {best_fit[1]} buses run  with a total capacity of {best.cap} and the average length of a bus route is {best_fit[2]} km')
 
 """
 data_out = { 'data': [(int(route.num), [int(r) for r in route.v_disabled]) for route in best.routes] }
