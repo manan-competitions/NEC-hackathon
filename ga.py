@@ -6,11 +6,18 @@ from copy import deepcopy
 from pprint import pprint
 from tqdm import tqdm
 import json
+import sys
 from helpers.route import Route, Routes
 from helpers.utils import get_node_vals, get_nbrs, random_walk, add_weights, fitness, simulate_people, GA, CreateGraph
 
+if len(sys.argv) < 2:
+    print('Usage: python3 ga.py [prefix for in/out file]')
+    exit(0)
+
+pre = sys.argv[1]
+
 # Get the graph
-G = CreateGraph(75, fname="./dataset/final_full_graph.csv")
+G = CreateGraph(75, fname=f'./data/{pre}_final_full_graph.csv', pre=pre, node_prob=True)
 
 # Hyper parameters
 pop_size = 100
@@ -18,12 +25,11 @@ walk_length = [7, 15]
 num_routes = [6, 12]
 num_ppl = 50000
 cap = 60
-ppl = simulate_people(G, num_ppl)
 # c1: [0,1]*50, c2: [0,1]*10 c3: avg_len = 10.98
 c1,c2,c3 = (50,20,100)
 opt_bus = 20
 elite = 0.1
-iter = 5
+iter = 20
 crossover_perc = 0.9
 mutation_prob = 0.15
 
@@ -44,7 +50,7 @@ Route.initialize_class(G)
 Routes.initialize_class(G)
 
 # Use a GA to solve the problem
-best, final_pop = GA(iter, pop, pop_size, ppl, c1, c2, c3, opt_bus, elite, mutation_prob, crossover_perc)
+best, final_pop = GA(iter, pop, pop_size, G, num_ppl, c1, c2, c3, opt_bus, elite, mutation_prob, crossover_perc)
 
 print('\nFinal Solution:')
 print(best)
@@ -53,5 +59,5 @@ print(f'\nThis route has {opt_num_bus} buses, On average, {opt_seats_taken}% of 
 
 data_out = { 'data': [(int(route.num), [int(r) for r in route.v]) for route in best.routes] }
 
-with open('optimal_routes.json','w') as f:
+with open('data/{pre}_optimal_routes.json','w') as f:
     json.dump(data_out, f, indent=2)

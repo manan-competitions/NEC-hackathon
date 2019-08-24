@@ -1,0 +1,752 @@
+{
+  "0": {
+    "stop_name": "N HIGH ST & W NATIONWIDE",
+    "latitude": 39.968247,
+    "longitude": -83.001902
+  },
+  "1": {
+    "stop_name": "S HAMILTON RD & E MAIN S",
+    "latitude": 39.955799,
+    "longitude": -82.876897
+  },
+  "2": {
+    "stop_name": "N HIGH ST & W LONG ST",
+    "latitude": 39.965183,
+    "longitude": -83.001272
+  },
+  "3": {
+    "stop_name": "S HIGH ST & W TOWN ST",
+    "latitude": 39.958175,
+    "longitude": -82.999879
+  },
+  "4": {
+    "stop_name": "S HIGH ST & W MOUND ST",
+    "latitude": 39.954128999999995,
+    "longitude": -82.999036
+  },
+  "5": {
+    "stop_name": "CLEVELAND AVE & MORSE RD",
+    "latitude": 40.058953,
+    "longitude": -82.952965
+  },
+  "6": {
+    "stop_name": "S 3RD ST & E BROAD ST",
+    "latitude": 39.962076,
+    "longitude": -82.99793100000001
+  },
+  "7": {
+    "stop_name": "N FRONT ST & W BROAD ST",
+    "latitude": 39.963187,
+    "longitude": -83.002602
+  },
+  "8": {
+    "stop_name": "E BROAD ST & S HIGH ST",
+    "latitude": 39.96215,
+    "longitude": -83.00010400000001
+  },
+  "9": {
+    "stop_name": "CLEVELAND AVE & E 5TH AV",
+    "latitude": 39.986782,
+    "longitude": -82.988679
+  },
+  "10": {
+    "stop_name": "CLEVELAND AVE & E 5TH AV",
+    "latitude": 39.985956,
+    "longitude": -82.989276
+  },
+  "11": {
+    "stop_name": "GREAT SOUTHERN WAL-MART",
+    "latitude": 39.889077,
+    "longitude": -83.000754
+  },
+  "12": {
+    "stop_name": "E BROAD ST & S GRANT AVE",
+    "latitude": 39.963194,
+    "longitude": -82.991371
+  },
+  "13": {
+    "stop_name": "E BROAD ST & PARSONS AVE",
+    "latitude": 39.964396,
+    "longitude": -82.981026
+  },
+  "14": {
+    "stop_name": "E BROAD ST & N GRANT AVE",
+    "latitude": 39.963374,
+    "longitude": -82.99146
+  },
+  "15": {
+    "stop_name": "E BROAD ST & N 3RD ST",
+    "latitude": 39.962629,
+    "longitude": -82.997646
+  },
+  "16": {
+    "stop_name": "E BROAD ST & N HIGH ST",
+    "latitude": 39.962356,
+    "longitude": -82.999622
+  },
+  "17": {
+    "stop_name": "CLEVELAND AVE & STATE RO",
+    "latitude": 40.084249,
+    "longitude": -82.951265
+  },
+  "18": {
+    "stop_name": "W BROAD ST & MARCONI BLV",
+    "latitude": 39.961985999999996,
+    "longitude": -83.003538
+  },
+  "19": {
+    "stop_name": "W LONG ST & N HIGH ST",
+    "latitude": 39.964887,
+    "longitude": -83.00142199999999
+  },
+  "20": {
+    "stop_name": "CLEVELAND AVE & MORSE RD",
+    "latitude": 40.058802,
+    "longitude": -82.95316
+  },
+  "21": {
+    "stop_name": "W BROAD ST & N DAVIS AVE",
+    "latitude": 39.959749,
+    "longitude": -83.021466
+  },
+  "22": {
+    "stop_name": "CLEVELAND AVE & MOUNT VE",
+    "latitude": 39.969718,
+    "longitude": -82.990394
+  },
+  "23": {
+    "stop_name": "W SPRING ST & N WALL ST",
+    "latitude": 39.966219,
+    "longitude": -83.00252900000001
+  },
+  "24": {
+    "stop_name": "W BROAD ST & N CENTRAL A",
+    "latitude": 39.957716999999995,
+    "longitude": -83.038461
+  },
+  "25": {
+    "stop_name": "W BROAD ST & STEVENS AVE",
+    "latitude": 39.957364,
+    "longitude": -83.041402
+  },
+  "26": {
+    "stop_name": "W BROAD ST & N HAGUE AVE",
+    "latitude": 39.955013,
+    "longitude": -83.07430699999999
+  },
+  "27": {
+    "stop_name": "S HIGH ST & E STATE ST",
+    "latitude": 39.959807,
+    "longitude": -83.000199
+  },
+  "28": {
+    "stop_name": "HOLLYWOOD CASINO",
+    "latitude": 39.95068,
+    "longitude": -83.10772800000001
+  },
+  "29": {
+    "stop_name": "WESTVIEW TURNAROUND",
+    "latitude": 40.069986,
+    "longitude": -83.019575
+  },
+  "30": {
+    "stop_name": "S HIGH ST & W MAIN ST",
+    "latitude": 39.955681,
+    "longitude": -82.99945699999999
+  },
+  "31": {
+    "stop_name": "CLEVELAND AVE & E HUDSON",
+    "latitude": 40.013469,
+    "longitude": -82.967463
+  },
+  "32": {
+    "stop_name": "CLEVELAND AVE & E WEBER",
+    "latitude": 40.022976,
+    "longitude": -82.96464399999999
+  },
+  "33": {
+    "stop_name": "MOUNT VERNON AVE & N 20T",
+    "latitude": 39.972054,
+    "longitude": -82.97359
+  },
+  "34": {
+    "stop_name": "W BROAD ST & S HAGUE AVE",
+    "latitude": 39.954876,
+    "longitude": -83.07430699999999
+  },
+  "35": {
+    "stop_name": "PICKFORDE DR & GARDENIA",
+    "latitude": 40.066016,
+    "longitude": -83.086642
+  },
+  "36": {
+    "stop_name": "MCKINLEY AVE & MCK TRANS",
+    "latitude": 39.964186,
+    "longitude": -83.041584
+  },
+  "37": {
+    "stop_name": "W BROAD ST & STEVENS AVE",
+    "latitude": 39.957223,
+    "longitude": -83.04136899999999
+  },
+  "38": {
+    "stop_name": "W BROAD ST & S CENTRAL A",
+    "latitude": 39.957654999999995,
+    "longitude": -83.03778199999999
+  },
+  "39": {
+    "stop_name": "E MAIN ST & S PEARL ST",
+    "latitude": 39.956251,
+    "longitude": -82.998361
+  },
+  "40": {
+    "stop_name": "3401 CLEVELAND AVE",
+    "latitude": 40.036668,
+    "longitude": -82.962912
+  },
+  "41": {
+    "stop_name": "W BROAD ST & S DAVIS AVE",
+    "latitude": 39.959626,
+    "longitude": -83.021307
+  },
+  "42": {
+    "stop_name": "W BROAD ST & S SKIDMORE",
+    "latitude": 39.960196,
+    "longitude": -83.01665799999999
+  },
+  "43": {
+    "stop_name": "CLEVELAND AVE & E HUDSON",
+    "latitude": 40.013317,
+    "longitude": -82.967682
+  },
+  "44": {
+    "stop_name": "E LIVINGSTON AVE & BRICE",
+    "latitude": 39.941961,
+    "longitude": -82.830412
+  },
+  "45": {
+    "stop_name": "W BROAD ST & S FRONT ST",
+    "latitude": 39.961912,
+    "longitude": -83.002714
+  },
+  "46": {
+    "stop_name": "W MOUND ST & S HIGH ST",
+    "latitude": 39.954784000000004,
+    "longitude": -82.999833
+  },
+  "47": {
+    "stop_name": "EDWARD WEAVER MEMORIAL &",
+    "latitude": 40.020539,
+    "longitude": -83.02496
+  },
+  "48": {
+    "stop_name": "CLEVELAND AVE & MOUNT VE",
+    "latitude": 39.969448,
+    "longitude": -82.99067600000001
+  },
+  "49": {
+    "stop_name": "W BROAD ST & BROADLAWN A",
+    "latitude": 39.9539,
+    "longitude": -83.09812099999999
+  },
+  "50": {
+    "stop_name": "MOUNT VERNON AVE & MIAMI",
+    "latitude": 39.972007,
+    "longitude": -82.974439
+  },
+  "51": {
+    "stop_name": "N HIGH ST & E RUSSELL ST",
+    "latitude": 39.975802,
+    "longitude": -83.003221
+  },
+  "52": {
+    "stop_name": "N HIGH ST & E 2ND AVE",
+    "latitude": 39.983331,
+    "longitude": -83.00466899999999
+  },
+  "53": {
+    "stop_name": "S JAMES RD & E MAIN ST",
+    "latitude": 39.957109,
+    "longitude": -82.914703
+  },
+  "54": {
+    "stop_name": "N HIGH ST & E 6TH AVE",
+    "latitude": 39.989151,
+    "longitude": -83.005886
+  },
+  "55": {
+    "stop_name": "E 3RD AVE & SAY AVE",
+    "latitude": 39.98368,
+    "longitude": -83.002554
+  },
+  "56": {
+    "stop_name": "S JAMES RD & E BROAD ST",
+    "latitude": 39.971609,
+    "longitude": -82.913583
+  },
+  "57": {
+    "stop_name": "N HIGH ST & CHITTENDEN A",
+    "latitude": 39.996142,
+    "longitude": -83.007266
+  },
+  "58": {
+    "stop_name": "N JAMES RD & E BROAD ST",
+    "latitude": 39.972159999999995,
+    "longitude": -82.913415
+  },
+  "59": {
+    "stop_name": "NEIL AVE & W 11TH AVE",
+    "latitude": 39.995298999999996,
+    "longitude": -83.014712
+  },
+  "60": {
+    "stop_name": "S JAMES RD & E MAIN ST",
+    "latitude": 39.956711999999996,
+    "longitude": -82.914876
+  },
+  "61": {
+    "stop_name": "N HIGH ST & W WOODRUFF A",
+    "latitude": 40.003553000000004,
+    "longitude": -83.008713
+  },
+  "62": {
+    "stop_name": "MORSE RD & N HIGH ST",
+    "latitude": 40.062490999999994,
+    "longitude": -83.01876800000001
+  },
+  "63": {
+    "stop_name": "E BROAD ST & LIMITED STO",
+    "latitude": 39.984885,
+    "longitude": -82.77205
+  },
+  "64": {
+    "stop_name": "N HIGH ST & E HUDSON ST",
+    "latitude": 40.014234,
+    "longitude": -83.011236
+  },
+  "65": {
+    "stop_name": "HIGH ST & W SYCAMORE ST",
+    "latitude": 39.94935,
+    "longitude": -82.998296
+  },
+  "66": {
+    "stop_name": "BOARDWALK ST & SHAPTER A",
+    "latitude": 40.089213,
+    "longitude": -82.991752
+  },
+  "67": {
+    "stop_name": "W BROAD ST & BROADLAWN A",
+    "latitude": 39.953737,
+    "longitude": -83.097562
+  },
+  "68": {
+    "stop_name": "EASTLAND NB LOT & S HAMI",
+    "latitude": 39.91868,
+    "longitude": -82.880672
+  },
+  "69": {
+    "stop_name": "N HIGH ST & LELAND AVE",
+    "latitude": 40.063364,
+    "longitude": -83.0193
+  },
+  "70": {
+    "stop_name": "NEW ALBANY PARK & RIDE",
+    "latitude": 40.090639,
+    "longitude": -82.78824
+  },
+  "71": {
+    "stop_name": "MEIJERS & POLARIS WOODS",
+    "latitude": 40.15045,
+    "longitude": -82.923976
+  },
+  "72": {
+    "stop_name": "E WHITTIER ST & SEYMOUR",
+    "latitude": 39.943154,
+    "longitude": -82.955278
+  },
+  "73": {
+    "stop_name": "E MAIN ST & S GRANT AVE",
+    "latitude": 39.957277000000005,
+    "longitude": -82.989201
+  },
+  "74": {
+    "stop_name": "HAMILTON RD & E BROAD ST",
+    "latitude": 39.975412,
+    "longitude": -82.874133
+  },
+  "75": {
+    "stop_name": "RIVERSIDE HOSPITAL",
+    "latitude": 40.03221,
+    "longitude": -83.032112
+  },
+  "76": {
+    "stop_name": "S HIGH ST & E FULTON ST",
+    "latitude": 39.954214,
+    "longitude": -82.999014
+  },
+  "77": {
+    "stop_name": "S HIGH ST & W STATE ST",
+    "latitude": 39.960481,
+    "longitude": -83.00030100000001
+  },
+  "78": {
+    "stop_name": "E MOUND ST & S 5TH ST",
+    "latitude": 39.955676000000004,
+    "longitude": -82.992503
+  },
+  "79": {
+    "stop_name": "S FRONT ST & W SYCAMORE",
+    "latitude": 39.949228000000005,
+    "longitude": -82.999889
+  },
+  "80": {
+    "stop_name": "OHIO HEALTH & AFRICA RD",
+    "latitude": 40.148258,
+    "longitude": -82.937991
+  },
+  "81": {
+    "stop_name": "E MAIN ST & S JAMES RD",
+    "latitude": 39.956552,
+    "longitude": -82.915196
+  },
+  "82": {
+    "stop_name": "E MAIN ST & COLLINGWOOD",
+    "latitude": 39.95613,
+    "longitude": -82.90101
+  },
+  "83": {
+    "stop_name": "N HAMILTON RD & E BROAD",
+    "latitude": 39.976601,
+    "longitude": -82.87385400000001
+  },
+  "84": {
+    "stop_name": "E MAIN ST & S HAMILTON R",
+    "latitude": 39.955439,
+    "longitude": -82.877212
+  },
+  "85": {
+    "stop_name": "E MOUND ST & S HIGH ST",
+    "latitude": 39.954862,
+    "longitude": -82.99892
+  },
+  "86": {
+    "stop_name": "N HIGH ST & OLENTANGY ST",
+    "latitude": 40.019832,
+    "longitude": -83.012855
+  },
+  "87": {
+    "stop_name": "GREAT SOUTHERN PARK AND",
+    "latitude": 39.885048,
+    "longitude": -83.000907
+  },
+  "88": {
+    "stop_name": "N HIGH ST & W HUDSON ST",
+    "latitude": 40.014091,
+    "longitude": -83.011296
+  },
+  "89": {
+    "stop_name": "S 4TH ST & E CAPITAL ST",
+    "latitude": 39.961908,
+    "longitude": -82.996055
+  },
+  "90": {
+    "stop_name": "E MAIN ST & S HAMILTON R",
+    "latitude": 39.955528,
+    "longitude": -82.876409
+  },
+  "91": {
+    "stop_name": "S FRONT ST & W MAIN ST",
+    "latitude": 39.955259999999996,
+    "longitude": -83.000988
+  },
+  "92": {
+    "stop_name": "N HIGH ST & CHITTENDEN A",
+    "latitude": 39.995888,
+    "longitude": -83.007328
+  },
+  "93": {
+    "stop_name": "E MAIN ST & COLLINGWOOD",
+    "latitude": 39.956228,
+    "longitude": -82.900702
+  },
+  "94": {
+    "stop_name": "N HIGH ST & CLARK PL",
+    "latitude": 39.988942,
+    "longitude": -83.005907
+  },
+  "95": {
+    "stop_name": "N HIGH ST & E GAY ST",
+    "latitude": 39.964416,
+    "longitude": -83.001014
+  },
+  "96": {
+    "stop_name": "N HIGH ST & PRICE AVE",
+    "latitude": 39.98038,
+    "longitude": -83.004273
+  },
+  "97": {
+    "stop_name": "E MAIN ST & S JAMES RD",
+    "latitude": 39.956626,
+    "longitude": -82.914401
+  },
+  "98": {
+    "stop_name": "W 5TH AVE & N HIGH ST",
+    "latitude": 39.987153,
+    "longitude": -83.005871
+  },
+  "99": {
+    "stop_name": "S FRONT ST & W BROAD ST",
+    "latitude": 39.961607,
+    "longitude": -83.002505
+  },
+  "100": {
+    "stop_name": "GENDER RD TOWN CENTER 1",
+    "latitude": 39.90978,
+    "longitude": -82.822099
+  },
+  "101": {
+    "stop_name": "EASTON TERMINAL BAY 9",
+    "latitude": 40.060744,
+    "longitude": -82.909756
+  },
+  "102": {
+    "stop_name": "EASTON TERMINAL BAY 7",
+    "latitude": 40.06071,
+    "longitude": -82.909428
+  },
+  "103": {
+    "stop_name": "EASTON TERMINAL BAY 6",
+    "latitude": 40.060717,
+    "longitude": -82.909242
+  },
+  "104": {
+    "stop_name": "S HIGH ST & E BROAD ST",
+    "latitude": 39.961566,
+    "longitude": -83.000259
+  },
+  "105": {
+    "stop_name": "MORSE RD & CLEVELAND AVE",
+    "latitude": 40.059412,
+    "longitude": -82.952282
+  },
+  "106": {
+    "stop_name": "EASTON TERMINAL BAY 3",
+    "latitude": 40.06087,
+    "longitude": -82.9093
+  },
+  "107": {
+    "stop_name": "EASTON TERMINAL BAY 1",
+    "latitude": 40.060855,
+    "longitude": -82.90964699999999
+  },
+  "108": {
+    "stop_name": "E MAIN ST & HOLTZMAN AVE",
+    "latitude": 39.957425,
+    "longitude": -82.945423
+  },
+  "109": {
+    "stop_name": "W MOUND ST & MOUNT CALVA",
+    "latitude": 39.949495,
+    "longitude": -83.022355
+  },
+  "110": {
+    "stop_name": "EASTON TERMINAL BAY 2",
+    "latitude": 40.060867,
+    "longitude": -82.909497
+  },
+  "111": {
+    "stop_name": "DUBLIN DALE DR PARK & RI",
+    "latitude": 40.101482,
+    "longitude": -83.107287
+  },
+  "112": {
+    "stop_name": "MORSE RD & TAMARACK BLVD",
+    "latitude": 40.060497999999995,
+    "longitude": -82.97144399999999
+  },
+  "113": {
+    "stop_name": "SPRING RUN DR & E DUBLIN",
+    "latitude": 40.087259,
+    "longitude": -82.956558
+  },
+  "114": {
+    "stop_name": "MORSE RD & CLEVELAND AVE",
+    "latitude": 40.059763000000004,
+    "longitude": -82.95469
+  },
+  "115": {
+    "stop_name": "N HIGH ST & W BROAD ST",
+    "latitude": 39.962804,
+    "longitude": -83.00073
+  },
+  "116": {
+    "stop_name": "BOARDWALK ST & SHAPTER A",
+    "latitude": 40.088165999999994,
+    "longitude": -82.992166
+  },
+  "117": {
+    "stop_name": "E SPRING ST & N HIGH ST",
+    "latitude": 39.966367,
+    "longitude": -83.00104300000001
+  },
+  "118": {
+    "stop_name": "E BROAD ST & N 4TH ST",
+    "latitude": 39.962845,
+    "longitude": -82.996064
+  },
+  "119": {
+    "stop_name": "S HAMILTON RD & E MAIN S",
+    "latitude": 39.955206,
+    "longitude": -82.876808
+  },
+  "120": {
+    "stop_name": "E BROAD ST & LOWELL RD",
+    "latitude": 39.971879,
+    "longitude": -82.91526999999999
+  },
+  "121": {
+    "stop_name": "W LANE AVE & NEIL AVE",
+    "latitude": 40.006233,
+    "longitude": -83.014021
+  },
+  "122": {
+    "stop_name": "WESTERVILLE PARK AND RID",
+    "latitude": 40.125671000000004,
+    "longitude": -82.944112
+  },
+  "123": {
+    "stop_name": "S GRANT AVE & E MOUND ST",
+    "latitude": 39.956452,
+    "longitude": -82.989778
+  },
+  "124": {
+    "stop_name": "N HIGH ST & E 18TH AVE",
+    "latitude": 40.002839,
+    "longitude": -83.008685
+  },
+  "125": {
+    "stop_name": "E LIVINGSTON AVE & PARSO",
+    "latitude": 39.952194,
+    "longitude": -82.982809
+  },
+  "126": {
+    "stop_name": "PARKWAY CENTRE DR & STRI",
+    "latitude": 39.877649,
+    "longitude": -83.045615
+  },
+  "127": {
+    "stop_name": "WESTWOODS PARK AND RIDE",
+    "latitude": 39.95077,
+    "longitude": -83.147345
+  },
+  "128": {
+    "stop_name": "W MOUND ST & MOUNT CALVA",
+    "latitude": 39.949414000000004,
+    "longitude": -83.022247
+  },
+  "129": {
+    "stop_name": "E LIVINGSTON AVE & S JAM",
+    "latitude": 39.94681,
+    "longitude": -82.914998
+  },
+  "130": {
+    "stop_name": "LONDON-GROVEPORT RD & AL",
+    "latitude": 39.830144,
+    "longitude": -82.933008
+  },
+  "131": {
+    "stop_name": "E LIVINGSTON AVE & BARNE",
+    "latitude": 39.946339,
+    "longitude": -82.906037
+  },
+  "132": {
+    "stop_name": "E 11TH AVE & N HIGH ST",
+    "latitude": 39.994823,
+    "longitude": -83.006637
+  },
+  "133": {
+    "stop_name": "CLEVELAND AVE & INNIS RD",
+    "latitude": 40.037146,
+    "longitude": -82.962506
+  },
+  "134": {
+    "stop_name": "E LIVINGSTON AVE & S HAM",
+    "latitude": 39.944886,
+    "longitude": -82.878498
+  },
+  "135": {
+    "stop_name": "KINGSDALE MACYS-NORTHWES",
+    "latitude": 40.021119,
+    "longitude": -83.057349
+  },
+  "136": {
+    "stop_name": "E BROAD ST & S JAMES RD",
+    "latitude": 39.972069,
+    "longitude": -82.91239499999999
+  },
+  "137": {
+    "stop_name": "E LIVINGSTON AVE & BARNE",
+    "latitude": 39.946438,
+    "longitude": -82.90602
+  },
+  "138": {
+    "stop_name": "E LIVINGSTON AVE & S JAM",
+    "latitude": 39.946919,
+    "longitude": -82.915211
+  },
+  "139": {
+    "stop_name": "3675 E BROAD ST",
+    "latitude": 39.972978999999995,
+    "longitude": -82.903918
+  },
+  "140": {
+    "stop_name": "REYNOLDSBURG PARK & RIDE",
+    "latitude": 39.939333000000005,
+    "longitude": -82.827732
+  },
+  "141": {
+    "stop_name": "1333 FIELDS AVE",
+    "latitude": 39.990521,
+    "longitude": -82.992056
+  },
+  "142": {
+    "stop_name": "E BROAD ST & S HAMILTON",
+    "latitude": 39.976063,
+    "longitude": -82.87446899999999
+  },
+  "143": {
+    "stop_name": "E BROAD ST & MAPLEWOOD A",
+    "latitude": 39.973214,
+    "longitude": -82.9028
+  },
+  "144": {
+    "stop_name": "S CHAMPION AVE & E MAIN",
+    "latitude": 39.957601000000004,
+    "longitude": -82.96945799999999
+  },
+  "145": {
+    "stop_name": "E BROAD ST & PARKWOOD AV",
+    "latitude": 39.966944,
+    "longitude": -82.960314
+  },
+  "146": {
+    "stop_name": "E BROAD ST & HAMILTON PA",
+    "latitude": 39.964573,
+    "longitude": -82.98089300000001
+  },
+  "147": {
+    "stop_name": "S HIGH ST & E RICH ST",
+    "latitude": 39.957233,
+    "longitude": -82.999669
+  },
+  "148": {
+    "stop_name": "GREAT EASTERN WESTBOUND",
+    "latitude": 39.956131,
+    "longitude": -82.873723
+  },
+  "149": {
+    "stop_name": "N HIGH ST & E NATIONWIDE",
+    "latitude": 39.968219,
+    "longitude": -83.001738
+  }
+}
