@@ -344,6 +344,25 @@ def GA(
         ]
 
         fit.sort(reverse=True, key=lambda x: x[1])
+        fit_vals = [f[1] for f in fit]
+        if not (np.any(np.greater(fit_vals, 0))):
+            print("Scaling negative weights")
+            min = np.min(fit_vals)
+            fit = [(fit_vals[i][0], fit[i][1]) for i in range(len(fit))]
+        elif np.any(np.less_equal(fit_vals, 0)):
+            print("Correcting negative vals")
+            fit = np.array(fit)
+            orig_shape = fit.shape
+            positives = fit[np.greater(fit_vals, 0)]
+            # print(positives)
+            fit = np.ndarray.tolist(
+                np.tile(positives, (int(np.ceil(fit.shape[0] / positives.shape[0])), 1))
+            )[: len(fit_vals)]
+
+            # print(fit)
+            # print(len(fit))
+            # print(len(fit_vals))
+            assert len(fit) == len(fit_vals)
 
         # Transfer elite directly to the next generation
         elite_num = int(elite * pop_size)
