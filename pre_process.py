@@ -5,18 +5,8 @@ import csv
 import sys
 import json
 from helpers.k_centers_problem import k_centers, DrawGraph
-from helpers.utils import CreateGraph
+from helpers.utils import CreateGraph, dist_km
 import matplotlib.pyplot as plt
-
-def dist_km(lat1, lat2, lon1, lon2):
-    # approximate radius of earth in km
-    R = 6373.0
-    dlon = np.radians(lon2 - lon1)
-    dlat = np.radians(lat2 - lat1)
-
-    a = np.sin(dlat / 2)**2 + np.cos(lat1) * np.cos(lat2) * np.sin(dlon / 2)**2
-    c = 2 * np.arctan2(np.sqrt(a), np.sqrt(1 - a))
-    return R*c
 
 if len(sys.argv) < 4:
     print('Usage: python3 pre_process.py [path/to/data].csv [num_stops] [num_centers] [prefix for out_files]')
@@ -60,7 +50,7 @@ for i in range(final_data[:,0].shape[0]):
     stp_nm = np.array(orig_data.loc[orig_data['UNIQUE_STOP_NUMBER']==ind]['STOP_NAME'])[0]
     lat = final_data[:,1][i]
     lon = final_data[:,2][i]
-    stop_dict[i] = { 'stop_name': stp_nm, 'latitude': lat, 'longitude': lon }
+    stop_dict[i] = { 'unique_name': final_data[:,0][i], 'stop_name': stp_nm, 'latitude': lat, 'longitude': lon }
 
 #Create initial data
 dists = np.zeros((num_stops, num_stops))
@@ -89,4 +79,5 @@ for i in range(len(centers)):
 with open(f'data/{pre}_labels.json','w') as f:
     json.dump(stop_dict, f, indent=2)
 np.savetxt(f'data/{pre}_final_full_graph.csv', full_dists, delimiter=',', fmt='%1.3f')
+np.savetxt(f'data/{pre}_initial_graph.csv', dists, delimiter=',', fmt='%1.3f')
 np.savetxt(f'data/{pre}_node_probs.csv', final_data[centers,3:]/np.sum(final_data[centers,3:], axis=0), delimiter=',', fmt='%3.3f')

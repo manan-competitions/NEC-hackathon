@@ -1,26 +1,9 @@
 import numpy as np
 from pprint import pprint, pformat
 from copy import deepcopy
+from helpers.utils import remove_duplicates, get_nbrs
 
 get_bin = lambda x, n: format(x, "b").zfill(n)
-
-
-def get_nbrs(node, G, first=None, last=None):
-    nbrs = sorted(
-        list(G.neighbors(node)), key=lambda n: G[node][n]["length"], reverse=True
-    )
-
-    if first:
-        return nbrs[:first]
-    elif last:
-        return nbrs[-last:]
-    else:
-        return nbrs
-
-def remove_duplicates(seq):
-    seen = set()
-    seen_add = seen.add
-    return [x for x in seq if not (x in seen or seen_add(x))]
 
 class Route(object):
     """
@@ -46,21 +29,16 @@ class Route(object):
     @property
     def cum_len(self):
         cum_sum = 0
-        for i in range(len(self.v) - 1):
-            #print(self.v[i], self.v[i + 1])
-            cum_sum += Route.world[self.v[i]][self.v[i + 1]]["length"]
+        for i in range(len(self.v_disabled) - 1):
+            cum_sum += Route.world[self.v_disabled[i]][self.v_disabled[i + 1]]["length"]
         return cum_sum
 
     @property
-    def cum_len(self):
-        cum_sum = 0
-        for i in range(len(self.v) - 1):
-            #print(self.v[i], self.v[i + 1])
-            cum_sum += Route.world[self.v[i]][self.v[i + 1]]["length"]
-        return cum_sum
+    def v_disabled(self):
+        return remove_duplicates(self.v)
 
     def __init__(self, cap, vertices, num=None):
-        self.num_bits = 4
+        self.num_bits = 5
         if not num:
             self.num = np.random.randint(1, 2 ** self.num_bits)
         else:
@@ -69,7 +47,7 @@ class Route(object):
         self.cap = cap
 
     def __str__(self):
-        return f"{self.num} | {len(self.v)} | {self.v}"
+        return f"{self.num} | {len(self.v_disabled)} | {self.v_disabled}"
 
     # To enable better printing
     __repr__ = __str__
@@ -87,7 +65,7 @@ class Route(object):
         # Mutate the route
         for i in range(len(self.v)):
             if np.random.rand() < mut_prob:
-                nbrs = get_nbrs(self.v[i], G, first=len(self.v) + 1)
+                nbrs = get_nbrs(G, self.v[i], first=len(self.v) + 1)
                 for n in nbrs[:]:
                     if n in self.v:
                         nbrs.remove(n)
@@ -119,14 +97,6 @@ class Route(object):
             temp_v = self.v
             self.v[ind_1_l + 1 : ind_1_u] = other_route.v[ind_2_l + 1 : ind_2_u]
             other_route.v[ind_2_l + 1 : ind_2_u] = temp_v[ind_1_l + 1 : ind_1_u]
-
-            """
-            self.v = remove_duplicates(self.v)
-            self.num = len(self.v)
-
-            other_route.v = remove_duplicates(other_route.v)
-            other_route.num = len(other_route.v)
-            """
 
 class Routes(object):
     """
