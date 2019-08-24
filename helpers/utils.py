@@ -1,5 +1,6 @@
 import numpy as np
 import csv
+import json
 import networkx as nx
 from numpy.random import choice
 from copy import deepcopy
@@ -7,6 +8,12 @@ from tqdm import tqdm
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import cm
 from helpers.route import Route, Routes
+
+def dump(best, pre, mode):
+	data_out = { 'data': [(int(route.num), [int(r) for r in route.v_disabled]) for route in best.routes] }
+	with open(f'final_data/{pre}_optimal_routes_{mode}.json','w') as f:
+		json.dump(data_out, f, indent=2)
+		print('-- cached --')
 
 def plot_diff(route1, route2, ppl, G, consts, opt_bus, max_trips):
 	G_1 = fitness(route1, ppl, G, consts, opt_bus, max_trips, components=False,mode='people', ret_graph=True)
@@ -221,7 +228,7 @@ def simulate_people(G, num_of_people):
 		DG.add_edge(x, y, weight=j)
 	return DG
 
-def GA(iter, pop, pop_size, G, num_ppl, consts, opt_bus, max_trips, elite, mutation_prob, crossover_perc, mode='optimal', plot=False):
+def GA(iter, pop, pop_size, G, num_ppl, consts, opt_bus, max_trips, elite, mutation_prob, crossover_perc, pre, mode='optimal', plot=False, every=10):
 	print(f'\nTraining the Genetic Algorithm in mode: {mode} ...')
 	new_pop = deepcopy(pop)
 	ppl = simulate_people(G, num_ppl)
@@ -234,8 +241,10 @@ def GA(iter, pop, pop_size, G, num_ppl, consts, opt_bus, max_trips, elite, mutat
 		curr_pop = deepcopy(new_pop)
 		new_pop = []
 
-		# get fitness of everyone
-	#    print('-- Fitness')
+		if (i+1)%every == 0:
+			dump(best, pre, mode)
+
+
 		fit = [(p,fitness(p, ppl, G, consts, opt_bus, max_trips, mode=mode)) for p in curr_pop]
 
 		fit.sort(reverse=True,key=lambda x: x[1])
@@ -270,13 +279,18 @@ def GA(iter, pop, pop_size, G, num_ppl, consts, opt_bus, max_trips, elite, mutat
 		best_fit.append(fit[0][1])
 		worst_fit.append(fit[-1][1])
 
+	plt.plot(avg_fit, color='b')
+	plt.plot(best_fit, color='g')
+	plt.plot(worst_fit, color='r')
+	plt.savefig(f'final_data/{pre}_{mode}.jpg')
+
 	if plot:
 		plt.plot(avg_fit, color='b')
 		plt.plot(best_fit, color='g')
 		plt.plot(worst_fit, color='r')
 		plt.show()
-		plt.legend()
-	return best, ppl, new_pop
+
+	return best, ppl, new_pop, avg_fit, best_fit, worst_fit
 
 def routes_diff(G1, G2, weight):
 	G3 = nx.DiGraph()
