@@ -1,9 +1,23 @@
 import numpy as np
 from pprint import pprint, pformat
 from copy import deepcopy
-from helpers.utils import remove_duplicates, get_nbrs
 
 get_bin = lambda x, n: format(x, "b").zfill(n)
+
+def remove_duplicates(seq):
+	seen = set()
+	seen_add = seen.add
+	return [x for x in seq if not (x in seen or seen_add(x))]
+
+def get_nbrs(G, node, first=None, last=None):
+	nbrs = sorted(list(G.neighbors(0)), key=lambda n: G[0][n]["length"], reverse=True)
+
+	if first:
+		return nbrs[:first]
+	elif last:
+		return nbrs[-last:]
+	else:
+		return nbrs
 
 class Route(object):
     """
