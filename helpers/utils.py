@@ -22,39 +22,16 @@ def dump(best, pre, mode):
         print("-- cached --")
 
 
-def plot_diff(
+def get_diff(
     route1,
     route2,
-    ppl,
     G,
-    consts,
-    opt_bus,
-    max_trips,
+    ppl,
     show_vertex_color=True,
     vertex_weight="prob_in",
 ):
-    G_1 = fitness(
-        route1,
-        ppl,
-        G,
-        consts,
-        opt_bus,
-        max_trips,
-        components=False,
-        mode="people",
-        ret_graph=True,
-    )
-    G_2 = fitness(
-        route2,
-        ppl,
-        G,
-        consts,
-        opt_bus,
-        max_trips,
-        components=False,
-        mode="people",
-        ret_graph=True,
-    )
+    G_1 = fitness_trunc(route1, ppl, G)
+    G_1 = fitness_trunc(route2, ppl, G)
     G_diff = routes_diff(G_1, G_2, "weight")
 
     count_pos = 0
@@ -67,27 +44,7 @@ def plot_diff(
         elif G_diff[k[0]][k[1]]["weight"] < 0:
             count_neg -= G_diff[k[0]][k[1]]["weight"]
 
-    print(count_pos, count_neg)
-
-    pos = nx.spring_layout(G)
-
-    # color = range(G_diff.size())
-    color = [G_diff[u][v]["weight"] for u, v in G_diff.edges()]
-    node_color = "Y"
-    if show_vertex_color:
-        _node_color = [
-            nx.get_node_attributes(G, vertex_weight)[x] for x in range(G.order())
-        ]
-    nx.draw(
-        G_diff,
-        pos,
-        node_color=_node_color,
-        edge_color=color,
-        width=1,
-        cmap=cm.get_cmap("Reds"),
-        edge_cmap=cm.get_cmap("bwr"),
-        with_labels=True,
-    )
+    return coutn_pos,cont_neg, G_diff
 
 
 def get_routes_csv(fname, cap=150):
@@ -286,7 +243,37 @@ def fitness(
         + c3 * routes.cum_len / routes.num_buses,
     )
 
-
+def fitness_trunc(routes, ppl, G):
+    prev_dg = sim_dg
+    sim_dg = deepcopy(sim_dg)
+    miles_traveled = dict()
+    deboard_dict = dict()
+    for route in routes.routes:
+        current_capacity = route.num * route.cap
+        for i in range(len(route.v_disabled) - 1):
+            current_capacity += deboard_dict.get(i, 0)
+            deboard_dict[i] = 0
+            for k in set(sim_dg[route.v_disabled[i]]).intersection(
+                set(route.v_disabled[i + 1 :])
+            ):
+                p = route.v.index(k)
+                people_boarding = min(
+                    sim_dg[route.v_disabled[i]][k]["weight"], current_capacity
+                )
+                miles_traveled[(i, k)] = (
+                    miles_traveled.get((i, k), 0)
+                    + sum(
+                        [
+                            G[x[0]][x[1]]["length"]
+                            for x in zip(route.v[i:p], route.v[i + 1 : p + 1])
+                        ]
+                    )
+                    * people_boarding
+                )
+                sim_dg[route.v_disabled[i]][k]["weight"] -= people_boarding
+                deboard_dict[k] = deboard_dict.get(k, 0) + people_boarding
+                current_capacity -= people_boarding
+    return sim_dg
 def simulate_people(G, num_of_people):
     arr_out = [x for y, x in nx.get_node_attributes(G, "prob_out").items()]
     arr_out = [x / sum(arr_out) for x in arr_out]
