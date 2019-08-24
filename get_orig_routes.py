@@ -17,7 +17,7 @@ def f(x, G, centers):
 	return K
 
 if len(sys.argv) < 4:
-	print('Usage: python3 pre_process.py [path/to/data].csv [num_stops] [num_centers] [prefix for out_files]')
+	print('Usage: python3 get_orig.py [path/to/data].csv [num_stops] [num_centers] [prefix for out_files]')
 	exit(0)
 
 num_stops = int(sys.argv[2])
@@ -39,10 +39,12 @@ rev_dict = get_reverse_dict(f'data/{pre}_labels.json')
 G = CreateGraph(n=num_stops, fname=f'data/{pre}_initial_graph.csv', pre=pre)
 centers = k_centers(G, k)
 #print(sorted(centers))
-with open(f'data/{pre}_routes.csv', 'w') as fl:
-	writer = csv.writer(fl)
-	for route in route_stops:
-		temp_route = [int(rev_dict[r]) for r in route if r in rev_dict]
-		final_route = [centers.index(v) if v in centers else f(v, G, centers) for v in temp_route]
-		#print(final_route)
-		writer.writerow(remove_duplicates(final_route))
+
+all_routes = []
+for route in route_stops:
+	temp_route = [int(rev_dict[r]) for r in route if r in rev_dict]
+	final_route = remove_duplicates([centers.index(v) if v in centers else f(v, G, centers) for v in temp_route])
+	all_routes.append([1, [int(route) for route in final_route]])
+
+with open(f'final_data/{pre}_optimal_routes_original.json', 'w') as fl:
+	json.dump({'data': all_routes}, fl, indent=2)
