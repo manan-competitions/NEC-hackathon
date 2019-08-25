@@ -3,18 +3,12 @@ from collections import defaultdict
 from itertools import product
 import matplotlib.pyplot as plt
 
-"""
-Routes.routes = (list of 'Route')
-Route.v = (ordered set of vert)
-"""
+def optimal_route(list_route, src, dest):
 
-
-def optimal_route(routels, src, dest):
-
-    print(src, dest)
+    print(f'S: {src}, D: {dest}')
     # Check if direct Path - O(n)
     direct_possible = []
-    for rot in routels.routes:
+    for rot in list_route:
         if (src in rot.v_disabled) and (dest in rot.v_disabled):
             direct_possible.append(rot)
     if direct_possible:
@@ -37,15 +31,13 @@ def optimal_route(routels, src, dest):
     # Generate nx graph and HashTableLists
     rats = defaultdict(list)
     G = nx.Graph()
-    for rotno, rot in enumerate(routels.routes):
+    for rotno, rot in enumerate(list_route):
         vrot = rot.v_disabled
         for i in range(len(vrot) - 1):
             G.add_edges_from([(vrot[i], vrot[i+1])])
             rats[vrot[i]].append(rotno)
             rats[vrot[i+1]].append(rotno)
     # Find all shortest path
-    print(G.edges())
-    print(rats)
     shortpaths = nx.all_shortest_paths(G, src, dest)
     #Search through product of routes of all shortest paths
     switchlist = []
@@ -67,5 +59,5 @@ def optimal_route(routels, src, dest):
     for i in range(len(switchlist)):
         if switchlist[i] == minsw:
             break
-    best_path = [(routels.routes[routelist[i][j]], pather[i][j]) for j in range(len(pather[i]))]
+    best_path = [(list_route[routelist[i][j]], pather[i][j]) for j in range(len(pather[i]))]
     return best_path

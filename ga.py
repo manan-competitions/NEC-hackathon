@@ -8,9 +8,11 @@ from tqdm import tqdm
 import json
 import sys
 from helpers.utils import get_node_vals, get_nbrs, random_walk, add_weights, \
-                          fitness, simulate_people, GA, CreateGraph, plot_diff
+                          fitness, simulate_people, GA, CreateGraph, get_diff
 from helpers.route import Route, Routes
 import matplotlib.pyplot as plt
+from routePath import optimal_route
+from webtools import *
 
 if len(sys.argv) < 2:
     print("Usage: python3 ga.py [prefix for in/out file]")
@@ -48,10 +50,10 @@ print("Generating initial routes ...")
 Route.initialize_class(G)
 
 for i in tqdm(range(pop_size)):
-    source, destination = choice(list(G.nodes()), size=2)
     routenum = np.random.randint(num_routes[0], num_routes[1] + 1)
     rts = []
     for i in range(routenum):
+        source, destination = choice(list(G.nodes()), size=2)
         length = np.random.randint(walk_length[0], walk_length[1] + 1)
         rts.append(Route(cap, random_walk(G, source, destination, length)))
     pop.append(Routes(rts))
@@ -67,6 +69,17 @@ print(np.mean(fit, axis=0))
 Route.initialize_class(G)
 Routes.initialize_class(G)
 
+rs = pop[0]
+src  = pop[0].routes[1].v[2]
+dest  = pop[0].routes[2].v[3]
+
+path = optimal_route(rs.routes, src, dest)
+print(path)
+
+#plot_route(G, rs.routes, show=True)
+plot_route_sd(G, rs.routes, src, dest, show=True)
+
+"""
 # Use a GA to solve the problem
 best, ppl, final_pop, avg, bst, wst = GA(iter, pop, pop_size, G, num_ppl, consts, \
                             opt_bus, max_trips, elite, mutation_prob, \
@@ -77,4 +90,4 @@ print(best)
 best_fit = fitness(best, ppl, G, consts, opt_bus, max_trips, components=True)
 print(f'\nThis route serves {100*best_fit[0]/best.cap}% ({best_fit[0]}) of people , About {best_fit[1]} buses run  with a total capacity of {best.cap} and the average length of a bus route is {best_fit[2]} km')
 
-#plot_diff(best, final_pop[-1], ppl, G, consts, opt_bus, max_trips)
+"""
