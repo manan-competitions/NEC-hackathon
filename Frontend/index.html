@@ -5,15 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>The Transporters</title>
-    <link rel="stylesheet" href="fontawesome-5.5/css/all.min.css" />
-    <link rel="stylesheet" href="slick/slick.css">
-    <link rel="stylesheet" href="slick/slick-theme.css">
-    <link rel="stylesheet" href="magnific-popup/magnific-popup.css">
-    <link rel="stylesheet" href="css/bootstrap.min.css" />
-    <link rel="stylesheet" href="css/templatemo-style.css" />
-    <link rel="stylesheet" href="css/login.css" />
+    <link rel="stylesheet" href="{% static 'fontawesome-5.5/css/all.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'slick/slick.css' %}">
+    <link rel="stylesheet" href="{% static 'slick/slick-theme.css' %}">
+    <link rel="stylesheet" href="{% static 'magnific-popup/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/templatemo-style.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/login.css' %}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="css/form1_style.css" />
+    <link rel="stylesheet" href="{% static 'css/form1_style.css' %}" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -76,7 +76,7 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-6">
-            <img src="img/trimet.jpg" alt="Image" class="img-fluid tm-intro-img" />
+            <img src="{% static 'img/trimet.jpg' %}" alt="Image" class="img-fluid tm-intro-img" />
           </div>
           <div class="col-lg-6">
             <div class="tm-intro-text-container">
@@ -915,7 +915,7 @@ Also alongwith these, we created admin dashboard for managing routes. Other than
     <hr size="4.5" width="100%" align="left" color="#4CAF50">
 
     <div class="login_imgcontainer" style="background-color:#f1f1f1">
-        <img src="img/login_avatar.png" alt="Avatar" class="avatar" width="100px">
+        <img src="{% static 'img/login_avatar.png' %}" alt="Avatar" class="avatar" width="100px">
     </div>
 
     <div>
@@ -994,12 +994,12 @@ Also alongwith these, we created admin dashboard for managing routes. Other than
            </p>
         </footer>
     </section>
-    <script src="js/jquery-1.9.1.min.js"></script>     
-    <script src="slick/slick.min.js"></script>
-    <script src="magnific-popup/jquery.magnific-popup.min.js"></script>
-    <script src="js/jquery.singlePageNav.min.js"></script>     
-    <script src="js/bootstrap.min.js"></script> 
-    <script src="js/form1_script.js"></script> 
+    <script src="{% static 'js/jquery-1.9.1.min.js' %}"></script>     
+    <script src="{% static 'slick/slick.min.js' %}"></script>
+    <script src="{% static 'magnific-popup/jquery.magnific-popup.min.js' %}"></script>
+    <script src="{% static 'js/jquery.singlePageNav.min.js' %}"></script>     
+    <script src="{% static 'js/bootstrap.min.js' %}"></script> 
+    <script src="{% static 'js/form1_script.js' %}"></script> 
 
     <script>
 
