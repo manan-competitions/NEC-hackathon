@@ -37,6 +37,7 @@ consts = {
 'people': (1, 0, 0),
 'money': (0, 1000, 70),
 }
+
 opt_bus = 20
 max_trips = 5 # no of times a bus can run on a specific route
 elite = 0.1
