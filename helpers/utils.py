@@ -22,16 +22,9 @@ def dump(best, pre, mode):
         print("-- cached --")
 
 
-def get_diff(
-    route1,
-    route2,
-    G,
-    ppl,
-    show_vertex_color=True,
-    vertex_weight="prob_in",
-):
+def get_diff(route1, route2, G, ppl, show_vertex_color=True, vertex_weight="prob_in"):
     G_1 = fitness_trunc(route1, ppl, G)
-    G_1 = fitness_trunc(route2, ppl, G)
+    G_2 = fitness_trunc(route2, ppl, G)
     G_diff = routes_diff(G_1, G_2, "weight")
 
     count_pos = 0
@@ -44,7 +37,7 @@ def get_diff(
         elif G_diff[k[0]][k[1]]["weight"] < 0:
             count_neg -= G_diff[k[0]][k[1]]["weight"]
 
-    return coutn_pos,cont_neg, G_diff
+    return count_pos, count_neg, G_diff
 
 
 def get_routes_csv(fname, cap=150):
@@ -191,6 +184,7 @@ def fitness(
     components=False,
     mode="optimal",
     ret_graph=False,
+    ret_miles_traveled=False,
 ):
     c1, c2, c3 = consts[mode]
     # Prevent this method from having side-effects
@@ -229,6 +223,8 @@ def fitness(
     num_buses_per_route = np.sum(
         [np.ceil(route.num / max_trips) for route in routes.routes]
     )
+    if ret_miles_traveled:
+        return miles_traveled
 
     if ret_graph:
         return sim_dg
@@ -243,7 +239,8 @@ def fitness(
         + c3 * routes.cum_len / routes.num_buses,
     )
 
-def fitness_trunc(routes, ppl, G):
+
+def fitness_trunc(routes, sim_dg, G):
     prev_dg = sim_dg
     sim_dg = deepcopy(sim_dg)
     miles_traveled = dict()
@@ -274,6 +271,8 @@ def fitness_trunc(routes, ppl, G):
                 deboard_dict[k] = deboard_dict.get(k, 0) + people_boarding
                 current_capacity -= people_boarding
     return sim_dg
+
+
 def simulate_people(G, num_of_people):
     arr_out = [x for y, x in nx.get_node_attributes(G, "prob_out").items()]
     arr_out = [x / sum(arr_out) for x in arr_out]
