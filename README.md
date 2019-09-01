@@ -53,14 +53,15 @@ Each member of this GA population consists of a set of routes along with the num
 **Mutation**
 
 The mutation operator replaces a random % of the nodes in any route with one of their closest neighbors.
-[fig]
+![](https://raw.githubusercontent.com/MananSoni42/NEC-hackathon/master/Assets/Mutation.jpg?token=AHP3X2SMF5IREPQEADUAGL25OTO3A)
 
 **Crossover**
 
 The crossover operator does 2 things:
 * Randomly exhange some % of routes between two members of the GA population
 * Select 2 random routes, if they have 1 or more nodes in common, exchange the path between the common nodes (or till the end of the route if only 1 node is common)
-[fig]
+![](https://raw.githubusercontent.com/MananSoni42/NEC-hackathon/master/Assets/Crossover.jpg?token=AHP3X2SBBD5JBI7MDAAZA2K5OTMXE)
+
   **The Fitness function**
   We monitor 3 things while calculating our fitness function
   * How much of the total capacity of each bus is fulfilled (in %)
@@ -70,16 +71,24 @@ The crossover operator does 2 things:
 ### Outcomes
 We designed three seperate solutions and comapared them to the initial routes given in the dataset.
 * **Original**: The routes given in the original dataset
+	
 	Profits recorded: - 15,500 Rs
+	
 	Number of people served: 1136 using 164 buses
 * **Economical**: The model tries to find routes which optimize only the total revenue
+	
 	Profits recorded: 1,12,446 Rs
+	
 	Number of people served: 650 (-42%) using 51 buses
 * **People centric**: Optimize the model so maximum number of people are able to commute without considering the revenue
+	
 	Profits recorded: 2202 Rs
+	
 	Number of people served: 3374 (197%) using 74
 * **Resource centric**: The model tries to efficiently utilize all the resources in hand - It’s objective is somewhere between that of model 1 and model 2
+	
 	Profits recorded: 87000 Rs
+	
 	Number of people served: 2000 (76% capacity) using 65 buses
 
 ### Team members
