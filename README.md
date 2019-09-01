@@ -49,10 +49,14 @@ We, then, use the graph G2 to simulate a population of citizens where each citiz
 #### Step 4
 We know train a Genetic algorithm to decide on the optimal routes.
 Each member of this GA population consists of a set of routes along with the number of buses running on that route.
+
 **Mutation**
+
 The mutation operator replaces a random % of the nodes in any route with one of their closest neighbors.
 [fig]
+
 **Crossover**
+
 The crossover operator does 2 things:
 * Randomly exhange some % of routes between two members of the GA population
 * Select 2 random routes, if they have 1 or more nodes in common, exchange the path between the common nodes (or till the end of the route if only 1 node is common)
