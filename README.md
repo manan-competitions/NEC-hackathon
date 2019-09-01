@@ -1,14 +1,14 @@
 # NEC hackathon 2019
-This is the repository of team The Transporters for the NEC smart transport hackathon 2019.
-Developing a platform to facilitate smart public transport using Machinie Learning
+This is the repository of team **The Transporters** for the NEC smart transport hackathon 2019.
+Developing a platform to facilitate smart public transport using Machine Learning
 
 # Problem Statement
 #### Transformation of public transport by using web or service applications to elevate user motivation
 India is home to a large population of people. You require a medium of transport to move from one place to another. In India, the majority of people rely on their personal transport. Hence, this leads to roads congestions, various types of pollution, etc. You are provided with the benefits of public transportation. Your task is to build an application that must encourage people to use public transportation systems.
 # Our Solution  - Intelligent Transport System
- **One Stop Solution to Commuting - Anytime, anywhere in the city !!**
+ **➤ One Stop Solution to Commuting - Anytime, anywhere in the city !!**
 
-![](https://lh5.googleusercontent.com/liHuZj_dpud3T7ga56BUcFx62CmP4-55VJ_w2ITN93Mnp6ncAvK5fEUPfc-h5nLvN_4_SCzWqdwXnBMS0pZt5MnID01O0CZqIEYRCTCnCn2yMZ8YtdJfeECbhJtuWjpaBkZmQzlNEnY)
+![](https://raw.githubusercontent.com/MananSoni42/NEC-hackathon/master/Assets/Idea.jpg?token=AHP3X2S26X3RUOQFT2X66725OTJHO)
 ### Key Features
 -   Dynamically creating bus routes based on demand
 -   Full integration with internal routes & public flow
@@ -17,13 +17,13 @@ India is home to a large population of people. You require a medium of transport
 -   Dynamic Connected route Information at your Tips
 -   Impactful communication
 
-### Workflow of ITS
-[fig1]
+## Workflow of Intelligent Transportation System
+![](https://raw.githubusercontent.com/MananSoni42/NEC-hackathon/master/Assets/Working.jpg?token=AHP3X2TPQXKZX73XDEEL5J25OTJL6)
 
-###  App design
-[fig2]
-
-### How our algorithm works
+![](https://raw.githubusercontent.com/MananSoni42/NEC-hackathon/master/Assets/Timeline.jpg?token=AHP3X2XFDTXTVW35BKKKR4S5OTJNQ)
+##  App Design
+![](https://raw.githubusercontent.com/MananSoni42/NEC-hackathon/master/Assets/App_n.jpg?token=AHP3X2U77WOROP34C2TM57C5OTK7E)
+## How our algorithm works
 ##### Input
 As input, we expect a list of bus-stops along with their corresponding latitudes and longitudes. Also, each bus-stop needs to have data about how many people got on/off at that stop. An example can be seen in the file: ``data/may-trimester-2017-stop-ridership-ranking-saturday-csv-9.csv``
 #### Output
