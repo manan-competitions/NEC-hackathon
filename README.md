@@ -92,7 +92,7 @@ We designed three seperate solutions and comapared them to the initial routes gi
 	Number of people served: 2000 (76% capacity) using 65 buses
 
 ### Team members
-* [Chinmay Hebbar](github.com/cheese-cracker) - Backend developer
-* [Manan Soni](github.com/MananSoni42) - ML developer
-* [Siddharth Singh](github.com/coolsidd) - ML developer / App developer
-* [Sparsh Jain](github.com/dudesparsh) - Frontend developer
+* [Chinmay Hebbar](https://github.com/cheese-cracker) - Backend developer
+* [Manan Soni](https://github.com/MananSoni42) - ML developer
+* [Siddharth Singh](https://github.com/coolsidd) - ML developer / App developer
+* [Sparsh Jain](https://github.com/dudesparsh) - Frontend developer
