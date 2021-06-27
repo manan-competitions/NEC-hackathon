@@ -1,6 +1,7 @@
 # NEC hackathon 2019
 This is the repository of team **The Transporters** for the NEC smart transport hackathon 2019.
 Developing a platform to facilitate smart public transport using Machine Learning
+> To know more about our project, check out [this overview](https://manansoni42.github.io/posts/NEC-GA/).
 
 # Problem Statement
 #### Transformation of public transport by using web or service applications to elevate user motivation
